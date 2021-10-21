@@ -29,7 +29,6 @@ float var(float* x, int size) {
 
 float cov(float* x, float* y, int size){
     float sum = 0, mean1 = 0, mean2 = 0, a = 0, b = 0;
-    float testArr1[size], testArr2[size];
 
     for (int i = 0; i < size; ++i) {
         a += x[i];
@@ -39,11 +38,6 @@ float cov(float* x, float* y, int size){
     mean2 = b / (float) size;
 
     for (int i = 0; i < size; ++i) {
-
-        //test
-        testArr1[i] = x[i] - mean1;
-        testArr2[i] = y[i] - mean2;
-
         sum += (x[i] - mean1) * (y[i] - mean2);
     }
     return sum / (float) size;
@@ -53,4 +47,25 @@ float pearson(float* x, float* y, int size) {
     float covariance = cov(x, y, size);
     float xSigma = sqrtf(var(x, size)), ySigma = sqrtf(var(y, size));
     return (covariance / (xSigma * ySigma));
+}
+
+Line linear_reg(Point** points, int size) {
+    float xValue[size], yValue[size], a, b, xAvg = 0, yAvg = 0;
+
+    // extract x and y values to different arrays, and sums up both averages.
+    for (int i = 0; i < size; i++) {
+        xValue[i] = points[i]->x;
+        yValue[i] = points[i]->y;
+
+        xAvg += xValue[i];
+        yAvg += yValue[i];
+    }
+
+    xAvg = xAvg / (float) size;
+    yAvg = yAvg / (float)size;
+
+    a = (cov(xValue, yValue, size) / var(xValue, size));
+    b = yAvg - (a * xAvg);
+
+    return {a, b};
 }
