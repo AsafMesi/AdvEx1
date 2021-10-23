@@ -1,5 +1,5 @@
 //
-// Created by asafmesi on 10/21/21.
+// Created by asafmesi 318646072 and Dan Marom 208995035 on 10/21/21.
 //
 #include "iostream"
 #include <cmath>
@@ -11,7 +11,7 @@ float avg(float* x, int size) {
     for (int i = 0; i < size; ++i) {
         sum += x[i];
     }
-    return sum/float(size);
+    return sum/ float(size);
 }
 
 //returns the variance of X and Y, output will be non-negative number by definition.
@@ -22,7 +22,7 @@ float var(float* x, int size) {
     }
     u = powf(avg(x, size), 2);
     val = val/float(size);
-    return val-u;
+    return val - u;
 }
 
 // returns the covariance of X and Y
@@ -42,7 +42,7 @@ float pearson(float* x, float* y, int size) {
     covariance = cov(x, y, size);
     xSigma = sqrtf(var(x, size));
     ySigma = sqrtf(var(y, size));
-    return (covariance / (xSigma * ySigma));
+    return (covariance/ (xSigma * ySigma));
 }
 
 // performs a linear regression and return s the line equation
@@ -56,7 +56,7 @@ Line linear_reg(Point** points, int size) {
     }
     xAvg = avg(xValue, size);
     yAvg = avg(yValue, size);
-    a = (cov(xValue, yValue, size) / var(xValue, size));
+    a = (cov(xValue, yValue, size)/ var(xValue, size));
     b = yAvg - (a * xAvg);
     return {a, b};
 }
