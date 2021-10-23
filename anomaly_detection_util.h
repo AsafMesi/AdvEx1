@@ -5,7 +5,7 @@
 #ifndef ADVEX1_ANOMALY_DETECTION_UTIL_H
 #define ADVEX1_ANOMALY_DETECTION_UTIL_H
 
-/ returns the variance of X and Y
+//returns the variance of X and Y
 float var(float* x, int size);
 
 // returns the covariance of X and Y
@@ -27,7 +27,7 @@ public:
 class Point{
 public:
     float x,y;
-    Point(float x, float y):x(x),y(x){}
+    Point(float x, float y):x(x),y(y){}
 };
 
 // performs a linear regression and return s the line equation

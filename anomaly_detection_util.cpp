@@ -20,8 +20,8 @@ float avg(float* x, int size) {
 
 float var(float* x, int size) {
     float val = 0, sum = 0, u;
-    for (int i = 0; i < size; ++i, x++) {
-        val += val + powf(x[i], 2);
+    for (int i = 0; i < size; i++) {
+        val += powf(x[i], 2);
     }
     u = powf(avg(x, size), 2);
     val = val/float(size);
@@ -57,13 +57,10 @@ Line linear_reg(Point** points, int size) {
     for (int i = 0; i < size; i++) {
         xValue[i] = points[i]->x;
         yValue[i] = points[i]->y;
-
-        xAvg += xValue[i];
-        yAvg += yValue[i];
     }
 
-    xAvg = xAvg / (float) size;
-    yAvg = yAvg / (float)size;
+    xAvg = avg(xValue, size);
+    yAvg = avg(yValue, size);
 
     a = (cov(xValue, yValue, size) / var(xValue, size));
     b = yAvg - (a * xAvg);
