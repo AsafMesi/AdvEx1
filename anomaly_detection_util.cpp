@@ -16,12 +16,12 @@ float avg(float* x, int size) {
 
 //returns the variance of X and Y, output will be non-negative number by definition.
 float var(float* x, int size) {
-    float val = 0, sum = 0, u;
+    float val = 0, u;
     for (int i = 0; i < size; ++i) {
         val += powf(x[i], 2);
     }
-    u = powf(avg(x, size), 2);
     val = val/float(size);
+    u = powf(avg(x, size), 2);
     return val-u;
 }
 
@@ -31,7 +31,7 @@ float cov(float* x, float* y, int size){
     xAvg = avg(x, size);
     yAvg = avg(y, size);
     for (int i = 0; i < size; ++i) {
-        sum += (x[i] - xAvg) * (y[i] - yAvg);
+        sum += ((x[i] - xAvg) * (y[i] - yAvg));
     }
     return sum / (float) size;
 }
