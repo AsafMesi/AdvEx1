@@ -5,6 +5,7 @@
 #include <cmath>
 #include "anomaly_detection_util.h"
 
+
 float avg(float* x, int size) {
     if(size == 0) {
         std::cout << "empty array\n" << std::endl;
@@ -12,7 +13,7 @@ float avg(float* x, int size) {
     }
     float sum = 0;
     for (int i = 0; i < size; ++i) {
-        sum += sum + x[i];
+        sum += x[i];
     }
     return sum/float(size);
 }
@@ -68,4 +69,14 @@ Line linear_reg(Point** points, int size) {
     b = yAvg - (a * xAvg);
 
     return {a, b};
+}
+
+float dev(Point p,Point** points, int size){
+    Line regLine = linear_reg(points, size);
+    return dev(p, regLine);
+}
+
+float dev(Point p,Line l){
+    float fx = l.f(p.x);
+    return fabs(fx-p.y);
 }
