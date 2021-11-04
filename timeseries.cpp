@@ -11,9 +11,6 @@
 
 TimeSeries::TimeSeries(const char *CSVfileName){
 
-    // gets name
-    strcpy(this->fileName, CSVfileName);
-
     // open file
     ifstream file;
     file.open(CSVfileName);
@@ -48,10 +45,18 @@ void TimeSeries ::fillTable(ifstream& file){
 }
 
 void TimeSeries :: printTable(){
-    for (auto val : *this->features){
+    for (const auto& val : *this->features){
         cout << val + ", ";
     }
     cout << endl;
+    cout << "____________________";
+    cout << endl;
+   for (const auto& row : *this->table){
+       for(auto val : row) {
+           cout << to_string(val) + ", ";
+       }
+       cout << endl;
+   }
 }
 
 

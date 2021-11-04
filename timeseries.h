@@ -10,27 +10,25 @@
 using namespace std;
 
 
-class TimeSeries{
+class TimeSeries {
 
-vector <string>* features;
-vector<vector<double>>* table;
-
-char* fileName{};
+vector<string> *features;
+vector<vector<double>> *table;
 
 public:
 
     TimeSeries(const char *CSVfileName);
 
-    vector<string>* getFeatures();
+    vector<string> *getFeatures();
 
     int getNumberOfFeatures();
 
-    void fillTable(ifstream& file);
+    void fillTable(ifstream &file);
 
-    vector<string>* splitByComma(string& line);
+    vector<string> *splitByComma(string &line);
 
     void printTable();
 
-
+};
 
 #endif /* TIMESERIES_H_ */
