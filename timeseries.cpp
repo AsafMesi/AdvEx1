@@ -28,19 +28,21 @@ TimeSeries::TimeSeries(const char *CSVfileName){
     file.close();
 }
 
+vector<double>* stringVecToDoubleVec(vector <string>* strV) {
+    auto doubleV = new vector<double>;
+    for (auto &val: *strV) {
+        doubleV->push_back(std::stod(val));
+    }
+    return doubleV;
+}
 
 // gets opended ifstream
 void TimeSeries ::fillTable(ifstream& file){
-    this->table = new vector<vector<double>>;
-    int i = 0;
+    this->table = new vector<vector<double>*>;
     while(file.good()) {
         string line;
         getline(file, line);
-        vector<string>* row = splitByComma(line);
-        for(int j = 0 ; j < row->size(); j++) {
-            (*this->table)[i][j] = std :: stod ((*row)[j]);
-        }
-//        cout << line << endl;
+        (this->table)->push_back((stringVecToDoubleVec(splitByComma(line))));
     }
 }
 
@@ -52,7 +54,7 @@ void TimeSeries :: printTable(){
     cout << "____________________";
     cout << endl;
    for (const auto& row : *this->table){
-       for(auto val : row) {
+       for(auto val : *row) {
            cout << to_string(val) + ", ";
        }
        cout << endl;

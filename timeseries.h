@@ -13,7 +13,7 @@ using namespace std;
 class TimeSeries {
 
 vector<string> *features;
-vector<vector<double>> *table;
+vector<vector<double>*> *table;
 
 public:
 
