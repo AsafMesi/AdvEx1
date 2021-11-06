@@ -1,8 +1,9 @@
 
 #include "SimpleAnomalyDetector.h"
+#include "timeseries.h"
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
-    this->cf = new vector<correlatedFeatures>;
+    //this->cf = new vector<correlatedFeatures>;
 
 }
 
@@ -12,6 +13,8 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
+    int i=0, max, flag;
+
 
 }
 

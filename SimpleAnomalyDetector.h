@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <string.h>
 #include <math.h>
+#include "timeseries.h"
 
 struct correlatedFeatures{
 	string feature1,feature2;  // names of the correlated features
