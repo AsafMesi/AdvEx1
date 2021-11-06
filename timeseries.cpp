@@ -102,41 +102,20 @@ TimeSeries :: ~TimeSeries(){
     delete this->table;
 }
 
-vector<double>* TimeSeries ::getFeatureData(string feature){
-    int i = getFeatureIndex(feature);
-    vector<double>* temp = new vector<double>;
-    for(int j = 0; j < numOfRows; j++){
-        double f = (table[0][0][i][j]);
-        temp->push_back(f);
-    }
+vector<double>* TimeSeries ::getFeatureData(const string& feature){
+    return this->dataBase->find(feature)->second;
 
 
 }
 
-/**
- * Maps feature to its index
- * @param feature is the feature to map
- * @return its index
- */
-int TimeSeries :: getFeatureIndex(string feature) {
-    int counter = 0;
-    for(auto &f : *this->features){
-        if (f == feature){
-            break;
+void TimeSeries :: fillMap() {
+    this->dataBase = new map<string, vector<double> *>;
+    for (int i = 0; i < this->getNumberOfFeatures(); i++) {
+        auto *col = new vector<double>;
+        for (int j = 0; j < numOfRows; j++) {
+            double val = (*((*this->table)[j]))[i];
+            col->push_back(val);
         }
-        counter++;
+        this->dataBase->insert({(*features)[i], col});
     }
-    return counter;
 }
-//void TimeSeries :: fillMap(){
-//    this->dataBase = new map<string, vector<double>*>;
-//    auto* db = new map<string, vector<double>*>;
-//    for(int i = 0; i < this->getNumberOfFeatures(); i++){
-//        auto* col = new vector<double>;
-//        for(int j = 0; j < numOfRows; j++){
-//            col[j] = *this->table[j][i];
-//        }
-//        string s;
-//        std::copy(features[i].begin(), features[i].end(), s);
-//        this->dataBase->insert({s, col});
-//    }

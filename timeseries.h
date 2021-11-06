@@ -33,10 +33,10 @@ public:
 
     void printTable();
 
-//    void fillMap();
-    vector<double> *getFeatureData(string feature);
+    void fillMap();
 
-    int getFeatureIndex(string feature);
+    vector<double> *getFeatureData(const string& feature);
+
 };
 
 #endif /* TIMESERIES_H_ */
