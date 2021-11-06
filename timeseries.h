@@ -6,15 +6,15 @@
 #include <vector>
 #include "fstream"
 #include "string"
-#include "map"
+#include "unordered_map"
 using namespace std;
 
 
 class TimeSeries {
 
-vector<string> *features;
-vector<vector<float>*> *table;
-map<string, vector<float>*> *dataBase;
+vector<string> features;
+vector<vector<float>*>table;
+unordered_map<string, vector<float>*> dataBase;
 int numOfRows;
 
 public:
@@ -23,20 +23,21 @@ public:
 
     ~TimeSeries();
 
-    vector<string> *getFeatures();
+    int getNumberOfRows() const;
 
-    int getNumberOfFeatures();
+    int getNumberOfFeatures() const;
 
     void fillTable(ifstream &file);
 
-    static vector<string> *splitByComma(string &line);
+    static vector<std::string> * splitByComma(string &line);
 
     void printTable();
 
     void fillMap();
 
-    vector<float> *getFeatureData(const string& feature);
+    vector<float> getFeatureData (const string& feature) const;
 
+    vector<string> getFeatures() const;
 };
 
 #endif /* TIMESERIES_H_ */

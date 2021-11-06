@@ -30,6 +30,8 @@ public:
     Point(float x, float y):x(x),y(y){}
 };
 
+std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size);
+
 // performs a linear regression and return s the line equation
 Line linear_reg(Point** points, int size);
 

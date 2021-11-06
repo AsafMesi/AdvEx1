@@ -3,6 +3,7 @@
 //
 #include "iostream"
 #include <cmath>
+#include <vector>
 #include "anomaly_detection_util.h"
 
 // calculates the average of x array.
@@ -43,6 +44,16 @@ float pearson(float* x, float* y, int size) {
     xSigma = sqrtf(var(x, size));
     ySigma = sqrtf(var(y, size));
     return (covariance / (xSigma * ySigma));
+}
+
+// create
+std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size) {
+    std::vector<Point*> points;
+    for (int i=0; i < size; i++) {
+        auto *p = new Point(x[i], y[i]);
+        points.push_back(p);
+    }
+    return points;
 }
 
 // performs a linear regression and return s the line equation
