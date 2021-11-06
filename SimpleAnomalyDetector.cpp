@@ -2,7 +2,7 @@
 #include "SimpleAnomalyDetector.h"
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() {
-	// TODO Auto-generated constructor stub
+    this->cf = new vector<correlatedFeatures>;
 
 }
 
@@ -12,7 +12,7 @@ SimpleAnomalyDetector::~SimpleAnomalyDetector() {
 
 
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
-	// TODO Auto-generated destructor stub
+
 }
 
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){

@@ -11,6 +11,8 @@
 
 TimeSeries::TimeSeries(const char *CSVfileName){
 
+    numOfRows = 0;
+
     // open file
     ifstream file;
     file.open(CSVfileName);
@@ -43,6 +45,7 @@ void TimeSeries ::fillTable(ifstream& file){
         string line;
         getline(file, line);
         (this->table)->push_back((stringVecToDoubleVec(splitByComma(line))));
+        this->numOfRows ++;
     }
 }
 
@@ -86,3 +89,54 @@ vector<string>* TimeSeries :: splitByComma(string& line) {
     }
     return values;
 }
+
+/**
+ * Destructor
+ */
+TimeSeries :: ~TimeSeries(){
+    delete this->features;
+    for (auto p : *this->table)
+    {
+        delete p;
+    }
+    delete this->table;
+}
+
+vector<double>* TimeSeries ::getFeatureData(string feature){
+    int i = getFeatureIndex(feature);
+    vector<double>* temp = new vector<double>;
+    for(int j = 0; j < numOfRows; j++){
+        double f = (table[0][0][i][j]);
+        temp->push_back(f);
+    }
+
+
+}
+
+/**
+ * Maps feature to its index
+ * @param feature is the feature to map
+ * @return its index
+ */
+int TimeSeries :: getFeatureIndex(string feature) {
+    int counter = 0;
+    for(auto &f : *this->features){
+        if (f == feature){
+            break;
+        }
+        counter++;
+    }
+    return counter;
+}
+//void TimeSeries :: fillMap(){
+//    this->dataBase = new map<string, vector<double>*>;
+//    auto* db = new map<string, vector<double>*>;
+//    for(int i = 0; i < this->getNumberOfFeatures(); i++){
+//        auto* col = new vector<double>;
+//        for(int j = 0; j < numOfRows; j++){
+//            col[j] = *this->table[j][i];
+//        }
+//        string s;
+//        std::copy(features[i].begin(), features[i].end(), s);
+//        this->dataBase->insert({s, col});
+//    }

@@ -6,7 +6,7 @@
 #include <vector>
 #include "fstream"
 #include "string"
-
+#include "map"
 using namespace std;
 
 
@@ -14,10 +14,14 @@ class TimeSeries {
 
 vector<string> *features;
 vector<vector<double>*> *table;
+map<string, vector<double>*> *dataBase;
+int numOfRows;
 
 public:
 
     TimeSeries(const char *CSVfileName);
+
+    ~TimeSeries();
 
     vector<string> *getFeatures();
 
@@ -29,6 +33,10 @@ public:
 
     void printTable();
 
+//    void fillMap();
+    vector<double> *getFeatureData(string feature);
+
+    int getFeatureIndex(string feature);
 };
 
 #endif /* TIMESERIES_H_ */
