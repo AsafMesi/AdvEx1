@@ -1,11 +1,9 @@
 #include "timeseries.h"
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include <stdio.h>
-#include "string.h"
 #include <string>
 #include <sstream>
+#include "iterator"
 
 
 
@@ -27,20 +25,21 @@ TimeSeries::TimeSeries(const char *CSVfileName){
 
     // gets table
     TimeSeries :: fillTable(file);
+    fillMap();
     file.close();
 }
 
-vector<double>* stringVecToDoubleVec(vector <string>* strV) {
-    auto doubleV = new vector<double>;
+vector<float>* stringVecToDoubleVec(vector <string>* strV) {
+    auto doubleV = new vector<float>;
     for (auto &val: *strV) {
-        doubleV->push_back(std::stod(val));
+        doubleV->push_back(std::stof(val));
     }
     return doubleV;
 }
 
 // gets opended ifstream
 void TimeSeries ::fillTable(ifstream& file){
-    this->table = new vector<vector<double>*>;
+    this->table = new vector<vector<float>*>;
     while(file.good()) {
         string line;
         getline(file, line);
@@ -95,25 +94,31 @@ vector<string>* TimeSeries :: splitByComma(string& line) {
  */
 TimeSeries :: ~TimeSeries(){
     delete this->features;
-    for (auto p : *this->table)
+    for (auto row : *this->table)
     {
-        delete p;
+        delete row;
     }
     delete this->table;
+
+    for (auto & x : *this->dataBase)
+    {
+        delete x.second;
+    }
+    delete this->dataBase;
 }
 
-vector<double>* TimeSeries ::getFeatureData(const string& feature){
+vector<float>* TimeSeries ::getFeatureData(const string& feature){
     return this->dataBase->find(feature)->second;
 
 
 }
 
 void TimeSeries :: fillMap() {
-    this->dataBase = new map<string, vector<double> *>;
+    this->dataBase = new map<string, vector<float> *>;
     for (int i = 0; i < this->getNumberOfFeatures(); i++) {
-        auto *col = new vector<double>;
+        auto *col = new vector<float>;
         for (int j = 0; j < numOfRows; j++) {
-            double val = (*((*this->table)[j]))[i];
+            float val = (*((*this->table)[j]))[i];
             col->push_back(val);
         }
         this->dataBase->insert({(*features)[i], col});

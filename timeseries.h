@@ -13,13 +13,13 @@ using namespace std;
 class TimeSeries {
 
 vector<string> *features;
-vector<vector<double>*> *table;
-map<string, vector<double>*> *dataBase;
+vector<vector<float>*> *table;
+map<string, vector<float>*> *dataBase;
 int numOfRows;
 
 public:
 
-    TimeSeries(const char *CSVfileName);
+    explicit TimeSeries(const char *CSVfileName);
 
     ~TimeSeries();
 
@@ -29,13 +29,13 @@ public:
 
     void fillTable(ifstream &file);
 
-    vector<string> *splitByComma(string &line);
+    static vector<string> *splitByComma(string &line);
 
     void printTable();
 
     void fillMap();
 
-    vector<double> *getFeatureData(const string& feature);
+    vector<float> *getFeatureData(const string& feature);
 
 };
 
