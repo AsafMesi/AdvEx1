@@ -13,8 +13,7 @@ using namespace std;
 class TimeSeries {
 
 vector<string> features;
-vector<vector<float>*>table;
-unordered_map<string, vector<float>*> dataBase;
+unordered_map<string, vector<float>> dataBase;
 int numOfRows;
 
 public:
@@ -27,13 +26,7 @@ public:
 
     int getNumberOfFeatures() const;
 
-    void fillTable(ifstream &file);
-
-    static vector<std::string> * splitByComma(string &line);
-
-    void printTable();
-
-    void fillMap();
+    void addRow(unordered_map<string, vector<float>> &db, const string& row);
 
     vector<float> getFeatureData (const string& feature) const;
 
