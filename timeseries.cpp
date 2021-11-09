@@ -21,7 +21,7 @@ void splitByComma(vector <string> &dest, const string& text){
 
 void TimeSeries::addRow(unordered_map<string, vector<float>> &db, const string& row){
     std::stringstream ss(row);
-    for (const auto& key : this->features) {
+    for (const string& key : this->features) {
         if (! ss.good()){
             break;
         }

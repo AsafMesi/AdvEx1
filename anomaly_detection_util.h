@@ -4,6 +4,7 @@
 
 #ifndef ADVEX1_ANOMALY_DETECTION_UTIL_H
 #define ADVEX1_ANOMALY_DETECTION_UTIL_H
+#include "vector"
 
 //returns the variance of X and Y
 float var(float* x, int size);

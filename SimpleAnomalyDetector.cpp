@@ -13,10 +13,11 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     vector<string> features = ts.getFeatures();
     int c;
     float max;
+    vector<float> cVec;
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
         max = 0;
         c = (-1);
-        vector<float> cVec, xVec = ts.getFeatureData(features[i]);
+        vector<float> xVec = ts.getFeatureData(features[i]);
         float *x = xVec.data();
         for(int j = (i+1); j < ts.getNumberOfFeatures(); j++) {
             vector<float> yVec = ts.getFeatureData(features[j]);
@@ -24,7 +25,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
             float p = pearson(x, y, ts.getNumberOfRows());
             if (p > max) {
                 max = p; c = j;
-                vector<float> cVec = yVec;
+                cVec = yVec;
             }
         }
         correlatedFeatures temp = {};
