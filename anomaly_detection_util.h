@@ -42,4 +42,6 @@ float dev(Point p,Point** points, int size);
 // returns the deviation between point p and the line
 float dev(Point p,Line l);
 
+float maxDev(Point** points,  int size, Line &l);
+
 #endif //ADVEX1_ANOMALY_DETECTION_UTIL_H

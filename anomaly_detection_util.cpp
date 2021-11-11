@@ -8,33 +8,35 @@
 
 // calculates the average of x array.
 float avg(float* x, int size) {
-    float sum = 0;
+    float avg = 0;
     for (int i = 0; i < size; ++i) {
-        sum += x[i];
+        avg += (x[i])/(float(size));
     }
-    return sum/float(size);
+    return avg;
 }
 
 //returns the variance of X and Y, output will be non-negative number by definition.
 float var(float* x, int size) {
-    float val = 0, u;
+    float var = 0;
+    float u = avg(x, size);
     for (int i = 0; i < size; ++i) {
-        val += powf(x[i], 2);
+        float temp = (x[i] - u);   // x_i - avg
+        temp = powf(temp, 2);  // (x_i - avg)^2
+        temp = temp/float(size);  //  ((x_i - avg)^2)/N
+        var += temp;
     }
-    val = val/float(size);
-    u = powf(avg(x, size), 2);
-    return val-u;
+    return var;
 }
 
 // returns the covariance of X and Y
 float cov(float* x, float* y, int size){
-    float sum = 0, xAvg, yAvg;
+    float cov = 0, xAvg, yAvg;
     xAvg = avg(x, size);
     yAvg = avg(y, size);
     for (int i = 0; i < size; ++i) {
-        sum += ((x[i] - xAvg) * (y[i] - yAvg));
+        cov += (((x[i] - xAvg) * (y[i] - yAvg))) / float(size);
     }
-    return sum / (float) size;
+    return cov;
 }
 
 // returns the Pearson correlation coefficient of X and Y
@@ -50,7 +52,7 @@ float pearson(float* x, float* y, int size) {
 std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size) {
     std::vector<Point*> points;
     for (int i=0; i < size; i++) {
-        auto *p = new Point(x[i], y[i]);
+        Point *p = new Point(x[i], y[i]);
         points.push_back(p);
     }
     return points;
@@ -82,4 +84,15 @@ float dev(Point p,Point** points, int size){
 float dev(Point p,Line l){
     float fx = l.f(p.x);
     return fabs(fx-p.y);
+}
+
+float maxDev(Point** points,  int size, Line &l){
+    float max=0, curr;
+    for (int i = 0; i < size; i++){
+        curr = dev(*points[i], l);
+        if (curr > max){
+            max = curr;
+        }
+    }
+    return max;
 }
