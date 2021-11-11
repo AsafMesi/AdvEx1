@@ -41,13 +41,14 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
 void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current,
                vector<float> &cf1Vec, vector<float> &cf2Vec, int size){
+    long timeStep = 1;
     vector<Point*> points = createPointVector(cf1Vec, cf2Vec, size);
     for (Point* p: points){
         if (dev(*p, current.lin_reg) > current.threshold){
-            string description = "Exeption in features: " + current.feature1 + "and " + current.feature2;
-            const long timeStep = 0.1;
-            reports.push_back(AnomalyReport(description, timeStep));
+            string description = "Exception in features: " + current.feature1 + "and " + current.feature2 + "\n";
+            reports.emplace_back(description, timeStep);
         }
+        timeStep++;
     }
 }
 
