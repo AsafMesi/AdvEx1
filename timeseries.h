@@ -11,7 +11,6 @@ using namespace std;
 
 
 class TimeSeries {
-
 vector<string> features;
 unordered_map<string, vector<float>> dataBase;
 int numOfRows;

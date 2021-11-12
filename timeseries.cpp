@@ -53,10 +53,12 @@ TimeSeries::TimeSeries(const char *CSVfileName){
     }
 
     while (file.good()) {
-        string row ;
+        string row;
         getline(file, row);
+        if (!row.empty()) {
         addRow(this->dataBase, row);
         this->numOfRows++;
+        }
     }
     file.close();
 }

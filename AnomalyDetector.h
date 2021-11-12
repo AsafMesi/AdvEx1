@@ -17,7 +17,7 @@ public:
 	AnomalyReport(string description, long timeStep):description(description),timeStep(timeStep){}
 
     friend ostream& operator<<(ostream& os, const AnomalyReport &ar ) {
-        os << ar.description << '\n' << ar.timeStep;
+        os << ar.description + to_string(ar.timeStep);
         return os;
     }
 };
