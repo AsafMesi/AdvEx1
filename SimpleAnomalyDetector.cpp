@@ -67,7 +67,7 @@ void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
     for (Point* p : points) {
         temp = dev(*p, current.lin_reg);
         if ( temp > current.threshold) {
-            string description = current.feature1 + "-" + current.feature2 + "\n";
+            string description = current.feature1 + "-" + current.feature2;
             reports.emplace_back(description, timeStep);
         }
         timeStep++;
