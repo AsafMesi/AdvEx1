@@ -5,7 +5,12 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 
-
+/**
+ * This function gets a TimeSeries object, and models it by learning
+ * its normal data.
+ *
+ * @param ts is the reference to a TimeSeries object.
+ */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     vector<string> features = ts.getFeatures();
     int c; // if equals (-1) no correlation found.
@@ -39,28 +44,50 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
         }
     }
 
-void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current,
-               vector<float> &cf1Vec, vector<float> &cf2Vec, int size){
+    /**
+     * This function is an util function that creates a report that contains an anomaly
+     * detected by our anomaly detector and prints its description.
+     * It adds the report to a given vector that contains all anomalies that occurred this far.
+     * The anomaly contains description and timeStep of the anomaly.
+     *
+     * @param reports is the Anomaly Reports vector that gathers all anomalies so far.
+     * @param current is the current corelated featurs to check anomailes with.
+     * @param ts is the reference to the TimeSeries object.
+     */
+void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
+                                        ,const TimeSeries& ts) {
     long timeStep = 1;
-    vector<Point*> points = createPointVector(cf1Vec, cf2Vec, size);
-    for (Point* p: points){
-        if (dev(*p, current.lin_reg) > current.threshold){
-            string description = "Exception in features: " + current.feature1 + "and " + current.feature2 + "\n";
+    string cf1 = current.feature1;
+    string cf2 = current.feature2;
+    vector<float> cf1Vec = ts.getFeatureData(cf1);
+    vector<float> cf2Vec = ts.getFeatureData(cf2);
+    int size = (int) cf1Vec.size();
+    vector<Point *> points = createPointVector(cf1Vec, cf2Vec, size);
+    float temp;
+    for (Point* p : points) {
+        temp = dev(*p, current.lin_reg);
+        if ( temp > current.threshold) {
+            string description = current.feature1 + "-" + current.feature2 + "\n";
             reports.emplace_back(description, timeStep);
         }
-        timeStep++;
+        timeStep ++;
     }
 }
 
+/**
+ * This function gets a reference to a TimeSeries object, and scans it
+ * for anomalies.
+ * If exception detected - create a report of the anomaly and saves it
+ * into vector of reports.
+ * Finally, returns all reports in a vector.
+ *
+ * @param ts is the reference to a TimeSeries object.
+ * @return vector of Anomaly Reports.
+ */
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> reports;
-    for (correlatedFeatures current: this->cf){
-        string cf1 = current.feature1;
-        string cf2 = current.feature2;
-        vector<float> cf1Vec = ts.getFeatureData(cf1);
-        vector<float> cf2Vec = ts.getFeatureData(cf2);
-        int size = (int)cf1Vec.size();
-        addReport(reports, current, cf1Vec, cf2Vec, size);
+    for (correlatedFeatures current: this->cf) {
+        addReport(reports, current, ts);
     }
     return reports;
 }

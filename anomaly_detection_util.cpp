@@ -86,6 +86,8 @@ float dev(Point p,Line l){
     return fabs(fx-p.y);
 }
 
+// returns the maximum deviation between an array of points and their linear regression line
+
 float maxDev(Point** points,  int size, Line &l){
     float max=0, curr;
     for (int i = 0; i < size; i++){
