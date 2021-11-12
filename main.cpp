@@ -17,9 +17,10 @@
  */
 
 int main(){
-    //const char* name = R"(C:\Users\DanMa\CLionProjects\APProject\test.csv)";
-    const char* name = R"(C:\Users\asaf4\CLionProjects\AdvEx2\test.csv)";
-    const char* liveData = R"(C:\Users\asaf4\CLionProjects\AdvEx2\aLiveData.csv)";
+    const char* name = R"(C:\Users\DanMa\CLionProjects\APProject\test.csv)";
+    //const char* name = R"(C:\Users\asaf4\CLionProjects\AdvEx2\test.csv)";
+    const char* liveData = R"(C:\Users\DanMa\CLionProjects\APProject\aLiveData.csv)";
+    //const char* liveData = R"(C:\Users\asaf4\CLionProjects\AdvEx2\aLiveData.csv)";
 
     TimeSeries* data = new TimeSeries(name);
     TimeSeries* firstLiveData = new TimeSeries(liveData);

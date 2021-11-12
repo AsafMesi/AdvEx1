@@ -17,7 +17,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     float m;
     vector<float> cVec, xVec;
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
-        m = 0.9;
+        m = 0.99;
         c = (-1);
         xVec = ts.getFeatureData(features[i]);
         //float *x = xVec.data();
