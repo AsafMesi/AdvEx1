@@ -1,5 +1,4 @@
 #include <iostream>
-#include "string"
 #include "timeseries.h"
 #include "AnomalyDetector.h"
 #include "SimpleAnomalyDetector.h"
@@ -23,6 +22,7 @@ int main(){
     TimeSeries* data = new TimeSeries(name);
     TimeSeriesAnomalyDetector* detector = new SimpleAnomalyDetector();
     detector->learnNormal(*data);
+    // vector<AnomalyReport> reports = detector->detect()
     delete data;
     delete detector;
     return 0;

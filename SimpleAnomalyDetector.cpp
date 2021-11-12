@@ -54,7 +54,7 @@ void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
 
 vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
     vector<AnomalyReport> reports;
-    for (correlatedFeatures current: this->cf){
+    for (const correlatedFeatures& current: this->cf){
         string cf1 = current.feature1;
         string cf2 = current.feature2;
         vector<float> cf1Vec = ts.getFeatureData(cf1);

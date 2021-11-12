@@ -83,7 +83,7 @@ float dev(Point p,Point** points, int size){
 // returns the deviation between point p and the line
 float dev(Point p,Line l){
     float fx = l.f(p.x);
-    return fabs(fx-p.y);
+    return std::fabs(fx-p.y);
 }
 
 float maxDev(Point** points,  int size, Line &l){

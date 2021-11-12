@@ -7,8 +7,8 @@
 #include "AnomalyDetector.h"
 #include <vector>
 #include <algorithm>
-#include <string.h>
-#include <math.h>
+#include <cstring>
+#include <cmath>
 #include "timeseries.h"
 
 struct correlatedFeatures{
