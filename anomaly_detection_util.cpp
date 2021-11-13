@@ -19,7 +19,7 @@
  *
  * We divide every element in the size of the array to achieve maximum precision.
  */
-float avg(float* x, int size) {
+float avg(const float* x, int size) {
     float avg = 0;
     for (int i = 0; i < size; ++i) {
         avg += (x[i])/(float(size));
@@ -151,7 +151,7 @@ float maxDev(Point** points,  int size, Line &l){
 std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size) {
     std::vector<Point*> points;
     for (int i=0; i < size; i++) {
-        Point *p = new Point(x[i], y[i]);
+        auto *p = new Point(x[i], y[i]);
         points.push_back(p);
     }
     return points;

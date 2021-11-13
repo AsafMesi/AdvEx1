@@ -11,14 +11,6 @@
 #define ADVEX1_ANOMALY_DETECTION_UTIL_H
 #include "vector"
 
-// documentation in the cpp file.
-
-float var(float* x, int size);
-
-float cov(float* x, float* y, int size);
-
-float pearson(float* x, float* y, int size);
-
 // 'a' is the slope, 'b' is the y-axis intersection.
 class Line{
 public:
@@ -36,14 +28,14 @@ public:
     Point(float x, float y):x(x),y(y){}
 };
 
-std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size);
-
+float var(float* x, int size);
+float cov(float* x, float* y, int size);
+float pearson(float* x, float* y, int size);
 Line linear_reg(Point** points, int size);
-
 float dev(Point p,Point** points, int size);
-
 float dev(Point p,Line l);
-
 float maxDev(Point** points,  int size, Line &l);
+
+std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size);
 
 #endif //ADVEX1_ANOMALY_DETECTION_UTIL_H
