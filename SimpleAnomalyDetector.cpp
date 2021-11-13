@@ -1,5 +1,6 @@
 
 #include "SimpleAnomalyDetector.h"
+#define PRECISION 1.1
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
@@ -17,7 +18,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     float m;
     vector<float> cVec, xVec;
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
-        m = 0.99;
+        m = 0.9;
         c = (-1);
         xVec = ts.getFeatureData(features[i]);
         //float *x = xVec.data();
@@ -38,7 +39,7 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
                 vector<Point*> pVec = createPointVector(xVec, cVec, ts.getNumberOfRows());
                 //Point** points = pVec.data();
                 temp.lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
-                temp.threshold = maxDev(&pVec[0], ts.getNumberOfRows(), temp.lin_reg);
+                temp.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), temp.lin_reg);
                 cf.push_back(temp);
             }
         }
