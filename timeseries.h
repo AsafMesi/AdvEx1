@@ -1,4 +1,11 @@
-
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #ifndef TIMESERIES_H_
 #define TIMESERIES_H_

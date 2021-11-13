@@ -1,3 +1,11 @@
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #include "SimpleAnomalyDetector.h"
 #define PRECISION 1.1
@@ -7,10 +15,13 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 
 /**
- * This function gets a TimeSeries object, and models it by learning
- * its normal data.
+ * @param ts is a reference to a TimeSeries object.
  *
- * @param ts is the reference to a TimeSeries object.
+ * This function gets a TimeSeries object, and models it by learning its normal data.
+ *
+ * for almost every two feature data (as seen in the nested for loop):
+ * check if the pearson between them is larger than 'm' - which mean the features have correlation.
+ * if so add it to the Detector correlated features vector with the needed data.
  */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     vector<string> features = ts.getFeatures();
@@ -18,13 +29,11 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
     float m;
     vector<float> cVec, xVec;
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
-        m = 0.9;
+        m = 0.9; // a floor limit to declare correlation.
         c = (-1);
         xVec = ts.getFeatureData(features[i]);
-        //float *x = xVec.data();
         for(int j = (i+1); j < ts.getNumberOfFeatures(); j++) {
             vector<float> yVec = ts.getFeatureData(features[j]);
-            //float *y = yVec.data();
             float p = fabs(pearson(&xVec[0], &yVec[0], ts.getNumberOfRows())); //pearson(x, y, ts.getNumberOfRows());
             if (p > m) {
                 m = p; c = j;
@@ -37,7 +46,6 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
                 temp.feature1 = features[i];
                 temp.feature2 = features[c];
                 vector<Point*> pVec = createPointVector(xVec, cVec, ts.getNumberOfRows());
-                //Point** points = pVec.data();
                 temp.lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
                 temp.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), temp.lin_reg);
                 cf.push_back(temp);

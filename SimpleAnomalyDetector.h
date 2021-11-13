@@ -1,8 +1,14 @@
-
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #ifndef SIMPLEANOMALYDETECTOR_H_
 #define SIMPLEANOMALYDETECTOR_H_
-
 #include "anomaly_detection_util.h"
 #include "AnomalyDetector.h"
 #include <vector>

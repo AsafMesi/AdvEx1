@@ -1,3 +1,12 @@
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
+
 #include "timeseries.h"
 #include <iostream>
 #include <vector>
