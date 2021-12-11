@@ -2,32 +2,42 @@
 // Created by DanMa on 11/12/2021.
 //
 
-#include "minCircle.h"
+#include "micCircle.h"
 // C++ program to find the minimum enclosing
 // circle for N integer points in a 2-D plane
 #include <algorithm>
+#include "anomaly_detection_util.h"
 #include <assert.h>
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include "micCircle.h"
 using namespace std;
 
 // Defining infinity
 const double INF = 1e18;
 
+
+Circle findMinCircle(Point** points,size_t size){
+
+}
+
 // Function to return the euclidean distance
 // between two points
-double dist(const Point& a, const Point& b)
+// distance((x1,y1), (x2,y2)) = sqrt( (x2-x1)^2 + (y2-y1)^2 )
+float distance(const Point& a, const Point& b)
 {
-    return sqrt(pow(a.x - b.x, 2)
-                + pow(a.y - b.y, 2));
+    float xDif = (a.x-b.x)*(a.x-b.x);
+    float yDif = (a.y-b.y)*(a.y-b.y);
+    return sqrt(xDif+yDif);
 }
 
 // Function to check whether a point lies inside
 // or on the boundaries of the circle
-bool is_inside(const Circle& c, const Point& p)
+// if point p is at most radius + 1 away from C.center
+bool isInside(const Circle& c, const Point& p)
 {
-    return dist(c.C, p) <= c.R;
+    return distance(c.center, p) < (c.radius + 1);
 }
 
 // The following two functions are used
@@ -35,12 +45,16 @@ bool is_inside(const Circle& c, const Point& p)
 // three points are given.
 
 // Helper method to get a circle defined by 3 points
-Point get_circle_center(double bx, double by,
-                        double cx, double cy)
+// given three points that are not on the same line - there is a unique circle which those three points on it's edge.
+// (x1 - h)^2 + (y1 - k)^2 = r^2
+// (x2 - h)^2 + (y2 - k)^2 = r^2
+// (x3 - h)^2 + (y3 - k)^2 = r^2
+// by solving for h,k we get the center of the circle (h,k)
+Point getCircleCenter(float bx, float by, float cx, float cy)
 {
-    double B = bx * bx + by * by;
-    double C = cx * cx + cy * cy;
-    double D = bx * cy - by * cx;
+    float B = bx * bx + by * by;
+    float C = cx * cx + cy * cy;
+    float D = bx * cy - by * cx;
     return { (cy * B - by * C) / (2 * D),
              (bx * C - cx * B) / (2 * D) };
 }
@@ -48,25 +62,26 @@ Point get_circle_center(double bx, double by,
 // Function to return a unique circle that
 // intersects three points
 Circle circle_from(const Point& A, const Point& B,
-                   const Point& C)
-{
-    Point I = get_circle_center(B.X - A.X, B.Y - A.Y,
-                                C.X - A.X, C.Y - A.Y);
+                   const Point& C) {
+    Point I = getCircleCenter(B.x - A.x, B.y - A.y,
+                              C.x - A.x, C.y - A.y);
 
-    I.X += A.X;
-    I.Y += A.Y;
-    return { I, dist(I, A) };
+    I.x += A.x;
+    I.y += A.y;
+    return {I, distance(I, A)};
 }
 
 // Function to return the smallest circle
 // that intersects 2 points
-Circle circle_from(const Point& A, const Point& B)
+Circle circle_from(const Point A, const Point B)
 {
+    float cx = A.x + B.x / 2;
+    float cy = A.y + B.y / 2;
     // Set the center to be the midpoint of A and B
-    Point C = { (A.X + B.X) / 2.0, (A.Y + B.Y) / 2.0 };
+    Point C = { cx, cy };
 
     // Set the radius to be half the distance AB
-    return { C, dist(A, B) / 2.0 };
+    return {C, distance(A, B) / 2 };
 }
 
 // Function to check whether a circle
@@ -79,7 +94,7 @@ bool is_valid_circle(const Circle& c,
     // to check whether the points
     // lie inside the circle or not
     for (const Point& p : P)
-        if (!is_inside(c, p))
+        if (!isInside(c, p))
             return false;
     return true;
 }
@@ -139,7 +154,7 @@ Circle welzl_helper(vector<Point>& P,
     Circle d = welzl_helper(P, R, n - 1);
 
     // If d contains p, return d
-    if (is_inside(d, p)) {
+    if (isInside(d, p)) {
         return d;
     }
 
@@ -155,24 +170,4 @@ Circle welzl(const vector<Point>& P)
     vector<Point> P_copy = P;
     random_shuffle(P_copy.begin(), P_copy.end());
     return welzl_helper(P_copy, {}, P_copy.size());
-}
-
-// Driver code
-int main()
-{
-    Circle mec = welzl({ { 0, 0 },
-                         { 0, 1 },
-                         { 1, 0 } });
-    cout << "Center = { " << mec.C.X << ", " << mec.C.Y
-         << " } Radius = " << mec.R << endl;
-
-    Circle mec2 = welzl({ { 5, -2 },
-                          { -3, -2 },
-                          { -2, 5 },
-                          { 1, 6 },
-                          { 0, 2 } });
-    cout << "Center = { " << mec2.C.X << ", " << mec2.C.Y
-         << " } Radius = " << mec2.R << endl;
-
-    return 0;
 }
