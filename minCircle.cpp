@@ -1,25 +1,12 @@
-//
-// Created by DanMa on 11/12/2021.
-//
 
 #include "minCircle.h"
 // C++ program to find the minimum enclosing
 // circle for N integer points in a 2-D plane
-#include <algorithm>
 #include "anomaly_detection_util.h"
 #include <assert.h>
-#include <iostream>
 #include <math.h>
-#include <random>
 #include <vector>
-#include "minCircle.h"
 using namespace std;
-
-// Defining infinity
-const double INF = 1e18;
-
-
-
 
 // Function to return the euclidean distance
 // between two points
