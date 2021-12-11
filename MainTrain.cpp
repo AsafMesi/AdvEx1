@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include "micCircle.h"
+#include "minCircle.h"
+#include "anomaly_detection_util.h"
 #include <chrono>
 
 using namespace std;

@@ -2,7 +2,7 @@
 // Created by DanMa on 11/12/2021.
 //
 
-#include "micCircle.h"
+#include "minCircle.h"
 // C++ program to find the minimum enclosing
 // circle for N integer points in a 2-D plane
 #include <algorithm>
@@ -10,17 +10,16 @@
 #include <assert.h>
 #include <iostream>
 #include <math.h>
+#include <random>
 #include <vector>
-#include "micCircle.h"
+#include "minCircle.h"
 using namespace std;
 
 // Defining infinity
 const double INF = 1e18;
 
 
-Circle findMinCircle(Point** points,size_t size){
 
-}
 
 // Function to return the euclidean distance
 // between two points
@@ -101,7 +100,7 @@ bool is_valid_circle(const Circle& c,
 
 // Function to return the minimum enclosing
 // circle for N <= 3
-Circle min_circle_trivial(vector<Point>& P)
+Circle baseCase(vector<Point>& P)
 {
     assert(P.size() <= 3);
     if (P.empty()) {
@@ -132,15 +131,15 @@ Circle min_circle_trivial(vector<Point>& P)
 // points on the circle boundary.
 // n represents the number of points in P
 // that are not yet processed.
-Circle welzl_helper(vector<Point>& P,
-                    vector<Point> R, int n)
+Circle findMinCircleHelper(vector<Point>& P,
+                           vector<Point> R, int n)
 {
-    // Base case when all points processed or |R| = 3
+    // if all points processed or |R| = 3, return result
     if (n == 0 || R.size() == 3) {
-        return min_circle_trivial(R);
+        return baseCase(R);
     }
 
-    // Pick a random point randomly
+//    // Pick a random point randomly
     int idx = rand() % n;
     Point p = P[idx];
 
@@ -151,7 +150,8 @@ Circle welzl_helper(vector<Point>& P,
 
     // Get the MEC circle d from the
     // set of points P - {p}
-    Circle d = welzl_helper(P, R, n - 1);
+//    Point p = P[n-1];
+    Circle d = findMinCircleHelper(P, R, n - 1);
 
     // If d contains p, return d
     if (isInside(d, p)) {
@@ -162,12 +162,12 @@ Circle welzl_helper(vector<Point>& P,
     R.push_back(p);
 
     // Return the MEC for P - {p} and R U {p}
-    return welzl_helper(P, R, n - 1);
+    return findMinCircleHelper(P, R, n - 1);
 }
 
-Circle welzl(const vector<Point>& P)
+Circle findMinCircle(Point** points, size_t size)
 {
-    vector<Point> P_copy = P;
-    random_shuffle(P_copy.begin(), P_copy.end());
-    return welzl_helper(P_copy, {}, P_copy.size());
+    vector<Point> P_copy = arrToVect(points, size);
+    return findMinCircleHelper(P_copy, {}, P_copy.size());
 }
+

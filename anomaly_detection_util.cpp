@@ -156,3 +156,12 @@ std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> 
     }
     return points;
 }
+
+std::vector<Point> arrToVect(Point** points, size_t size){
+    std::vector<Point> vector;
+    vector.reserve(size);
+for(int i = 0; i < size; i++){
+        vector.push_back(*(points[i]));
+    }
+    return vector;
+}
