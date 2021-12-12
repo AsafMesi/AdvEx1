@@ -150,6 +150,7 @@ float maxDev(Point** points,  int size, Line &l){
  */
 std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size) {
     std::vector<Point*> points;
+    points.reserve(size);
     for (int i=0; i < size; i++) {
         auto *p = new Point(x[i], y[i]);
         points.push_back(p);

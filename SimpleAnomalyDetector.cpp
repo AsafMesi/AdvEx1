@@ -9,6 +9,8 @@
 
 #include "SimpleAnomalyDetector.h"
 #define PRECISION 1.1
+#define MIN_CORRELATION_VALUE 0.5
+#define LINEAR_CORRELATION 0.9
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
@@ -20,12 +22,35 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
  * if so add it to the Detector correlated features vector with the needed data.
  */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
+
+    // fill cf without type, correlation > MIN_CORRELATION_VALUE
+    learnNormalHelper(ts);
+
+    // delete every cf that has correlation less than LINEAR_CORRELATION
+    auto isSimple = [](correlatedFeatures e) {return e.corrlation > LINEAR_CORRELATION;};
+    cf.erase(std::remove_if(begin(cf), end(cf), isSimple), end(cf));
+
+    for (auto linearCf: cf){
+        linearInit(linearCf, ts);
+    }
+}
+
+void SimpleAnomalyDetector::linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts){
+    vector<float> xVec = ts.getFeatureData(linearCf.feature1);
+    vector<float> yVec = ts.getFeatureData(linearCf.feature2);
+    vector<Point*> pVec = createPointVector(xVec, yVec, ts.getNumberOfRows());
+    linearCf.lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
+    linearCf.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), linearCf.lin_reg);
+}
+
+// todo - change to private
+void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){ // todo - private
     vector<string> features = ts.getFeatures();
     int c; // if equals (-1) no correlation found.
     float m;
     vector<float> cVec, xVec;
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
-        m = 0.9; // a floor limit to declare correlation.
+        m = MIN_CORRELATION_VALUE; // a floor limit to declare correlation.
         c = (-1);
         xVec = ts.getFeatureData(features[i]);
         for(int j = (i+1); j < ts.getNumberOfFeatures(); j++) {
@@ -38,16 +63,14 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
         }
         correlatedFeatures temp = {};
         if (c != -1) {
-                temp.corrlation = m;
-                temp.feature1 = features[i];
-                temp.feature2 = features[c];
-                vector<Point*> pVec = createPointVector(xVec, cVec, ts.getNumberOfRows());
-                temp.lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
-                temp.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), temp.lin_reg);
-                cf.push_back(temp);
-            }
+            temp.corrlation = m;
+            temp.feature1 = features[i];
+            temp.feature2 = features[c];
+            cf.push_back(temp);
         }
     }
+}
+
 
 /**
  * @param reports is the Anomaly Reports vector that gathers all anomalies so far.

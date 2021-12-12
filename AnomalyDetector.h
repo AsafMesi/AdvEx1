@@ -26,6 +26,7 @@ class TimeSeriesAnomalyDetector {
 public:
 	virtual void learnNormal(const TimeSeries& ts)=0;
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts)=0;
+    // get corrleation
 	virtual ~TimeSeriesAnomalyDetector()= default;
 };
 
