@@ -43,8 +43,7 @@ void SimpleAnomalyDetector::linearInit(correlatedFeatures &linearCf ,const TimeS
     linearCf.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), linearCf.lin_reg);
 }
 
-// todo - change to private
-void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){ // todo - private
+void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){
     vector<string> features = ts.getFeatures();
     int c; // if equals (-1) no correlation found.
     float m;

@@ -57,6 +57,9 @@ Circle circle_from(const Point& A, const Point& B,
     return {I, distance(I, A)};
 }
 
+
+
+
 // Function to return the smallest circle
 // that intersects 2 points
 Circle circle_from(const Point A, const Point B)
@@ -126,7 +129,7 @@ Circle findMinCircleHelper(vector<Point>& P,
         return baseCase(R);
     }
 
-//    // Pick a random point randomly
+    // Pick a random point randomly
     int idx = rand() % n;
     Point p = P[idx];
 
@@ -137,7 +140,6 @@ Circle findMinCircleHelper(vector<Point>& P,
 
     // Get the MEC circle d from the
     // set of points P - {p}
-//    Point p = P[n-1];
     Circle d = findMinCircleHelper(P, R, n - 1);
 
     // If d contains p, return d
@@ -157,4 +159,5 @@ Circle findMinCircle(Point** points, size_t size)
     vector<Point> P_copy = arrToVect(points, size);
     return findMinCircleHelper(P_copy, {}, P_copy.size());
 }
+
 

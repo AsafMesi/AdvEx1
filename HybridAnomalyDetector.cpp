@@ -36,7 +36,7 @@ void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
     }
 }
 
-void HybridAnomalyDetector::circleInit(correlatedFeatures &circleCf , const TimeSeries& ts){
+void HybridAnomalyDetector:: circleInit(correlatedFeatures &circleCf , const TimeSeries& ts){
     vector<float> xVec = ts.getFeatureData(circleCf.feature1);
     vector<float> yVec = ts.getFeatureData(circleCf.feature2);
     vector<Point*> pVec = createPointVector(xVec, yVec, ts.getNumberOfRows());

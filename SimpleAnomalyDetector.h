@@ -30,11 +30,11 @@ class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 
 protected:
     vector<correlatedFeatures> cf;
+    void linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts);
+    void learnNormalHelper(const TimeSeries& ts);
 public:
 	SimpleAnomalyDetector();
 	virtual void learnNormal(const TimeSeries& ts);
-    void learnNormalHelper(const TimeSeries& ts); // todo - private
-    void linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts); //todo - protected
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 	vector<correlatedFeatures> getNormalModel(){ return cf;}
     virtual ~SimpleAnomalyDetector();

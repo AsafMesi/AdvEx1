@@ -9,11 +9,12 @@
 #include "minCircle.h"
 
 class HybridAnomalyDetector:public SimpleAnomalyDetector {
+protected:
+    void circleInit(correlatedFeatures &circleCf , const TimeSeries& ts);
 public:
     HybridAnomalyDetector();
     virtual ~HybridAnomalyDetector();
     virtual void learnNormal(const TimeSeries& ts);
-    void circleInit(correlatedFeatures &circleCf , const TimeSeries& ts); // todo - protected
 };
 
 #endif //ANOMALY_DETECTION_UTIL_CPP_HYBRIDANOMALYDETECTOR_H
