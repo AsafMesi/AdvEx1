@@ -44,7 +44,7 @@ void HybridAnomalyDetector:: circleInit(int i, const TimeSeries& ts){
 
 bool HybridAnomalyDetector::exceeding(Point p,const correlatedFeatures &current) {
         if (current.corrlation <= 0.9){
-            return isInside(current.minCircle, p);
+            return !isInside(current.minCircle, p);
         }
         else {
             return (dev(p, current.lin_reg) > current.threshold);
