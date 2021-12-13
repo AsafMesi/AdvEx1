@@ -6,9 +6,17 @@
 #include <string>
 #include <vector>
 #include "timeseries.h"
+#include "SimpleAnomalyDetector.h"
+#include "minCircle.h"
 #include <cmath>
 using namespace std;
-
+struct correlatedFeatures{
+    string feature1,feature2;  // names of the correlated features
+    float corrlation;
+    Line lin_reg;
+    Circle minCircle;
+    float threshold;
+};
 
 class AnomalyReport{
 public:

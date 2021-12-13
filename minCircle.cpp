@@ -1,12 +1,8 @@
 
 #include "minCircle.h"
-// C++ program to find the minimum enclosing
-// circle for N integer points in a 2-D plane
 #include "anomaly_detection_util.h"
-#include <assert.h>
-#include <math.h>
-#include <vector>
-using namespace std;
+
+
 
 // Function to return the euclidean distance
 // between two points

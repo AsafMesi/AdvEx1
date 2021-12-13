@@ -4,6 +4,7 @@
 
 
 #include "HybridAnomalyDetector.h"
+#include "minCircle.h"
 
 #define CIRCLE_CORRELATION 0.5
 #define PRECISION 1.1
@@ -20,11 +21,7 @@ HybridAnomalyDetector::~HybridAnomalyDetector() {
 void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
 
         // fill cf without type, correlation > MIN_CORRELATION_VALUE
-        learnNormalHelper(ts);
-
-        // delete every cf that has correlation less than CIRCLE_CORRELATION
-        auto isHybrid = [](correlatedFeatures e) {return e.corrlation > CIRCLE_CORRELATION;};
-        cf.erase(std::remove_if(begin(cf), end(cf), isHybrid), end(cf));
+        learnNormalHelper(ts, CIRCLE_CORRELATION);
 
         for (auto currentCf: cf){
             if (currentCf.corrlation <= 0.9){
@@ -45,5 +42,12 @@ void HybridAnomalyDetector:: circleInit(correlatedFeatures &circleCf , const Tim
     circleCf.threshold = PRECISION * circleCf.minCircle.radius;
 }
 
-
+bool SimpleAnomalyDetector::exceeding(Point p,const correlatedFeatures &current) {
+        if (current.corrlation <= 0.9){
+            return isInside(current.minCircle, p);
+        }
+        else {
+            return (dev(p, current.lin_reg) > current.threshold);
+        }
+}
 

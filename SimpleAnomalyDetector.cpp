@@ -9,7 +9,7 @@
 
 #include "SimpleAnomalyDetector.h"
 #define PRECISION 1.1
-#define MIN_CORRELATION_VALUE 0.5
+#define CIR_CORRELATION 0.5
 #define LINEAR_CORRELATION 0.9
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
@@ -17,19 +17,17 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 /**
  * @param ts is a reference to a TimeSeries object.
  *
- * For features i,j s.t j > i (as seen in the nested for loop):
- * check if the pearson between them is larger than 'm' - which mean the features have correlation.
- * if so add it to the Detector correlated features vector with the needed data.
+ * This function
  */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
     // fill cf without type, correlation > MIN_CORRELATION_VALUE
-    learnNormalHelper(ts);
+    learnNormalHelper(ts, LINEAR_CORRELATION);
 
-    // delete every cf that has correlation less than LINEAR_CORRELATION
-    auto isSimple = [](correlatedFeatures e) {return e.corrlation > LINEAR_CORRELATION;};
-    cf.erase(std::remove_if(begin(cf), end(cf), isSimple), end(cf));
-
+    /*
+     * Goes through each correlated features found in learnNormalHelper
+     * and initialize its members.
+     */
     for (auto linearCf: cf){
         linearInit(linearCf, ts);
     }
@@ -43,24 +41,44 @@ void SimpleAnomalyDetector::linearInit(correlatedFeatures &linearCf ,const TimeS
     linearCf.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), linearCf.lin_reg);
 }
 
-void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){
+/**
+ * @param ts is a reference to a TimeSeries object.
+ * @param minCorrelation is the minimum threshold to declare correlation.
+ *
+ * For features i,j s.t j > i (as seen in the nested for loop):
+ * check if the pearson between them is larger than the given minCorrelation.
+ * If does, it means the features have correlation.
+ * Therefore add it to the Detector correlated features vector with the needed data.
+ */
+void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts, float minCorrelation){
+
+    // set up
     vector<string> features = ts.getFeatures();
     int c; // if equals (-1) no correlation found.
     float m;
     vector<float> cVec, xVec;
+
+    /*
+     * For each feature - goes through all features and get maximal correlative feature.
+     */
     for (int i = 0; i < ts.getNumberOfFeatures(); i++) {
-        m = MIN_CORRELATION_VALUE; // a floor limit to declare correlation.
+        m = minCorrelation; // a floor limit to declare correlation.
         c = (-1);
         xVec = ts.getFeatureData(features[i]);
         for(int j = (i+1); j < ts.getNumberOfFeatures(); j++) {
             vector<float> yVec = ts.getFeatureData(features[j]);
-            float p = fabs(pearson(&xVec[0], &yVec[0], ts.getNumberOfRows())); //pearson(x, y, ts.getNumberOfRows());
+            //pearson(x, y, ts.getNumberOfRows());
+            float p = fabs(pearson(&xVec[0], &yVec[0], ts.getNumberOfRows()));
             if (p > m) {
                 m = p; c = j;
                 cVec = yVec;
             }
         }
         correlatedFeatures temp = {};
+
+        /*
+         * If found correlative feature - add them to the correlation feature vector.
+         */
         if (c != -1) {
             temp.corrlation = m;
             temp.feature1 = features[i];
@@ -70,6 +88,9 @@ void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){
     }
 }
 
+bool SimpleAnomalyDetector::exceeding(Point p, const correlatedFeatures &current) {
+    return (dev(p, current.lin_reg) > current.threshold);
+}
 
 /**
  * @param reports is the Anomaly Reports vector that gathers all anomalies so far.
@@ -82,23 +103,22 @@ void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts){
  * that contains all anomalies that occurred so far.
  * Each report contains description and timeStep of the anomaly.
  */
-void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
+void SimpleAnomalyDetector::addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
                                         ,const TimeSeries& ts) {
     long timeStep = 1;
     vector<float> cf1Vec = ts.getFeatureData(current.feature1);
     vector<float> cf2Vec = ts.getFeatureData(current.feature2);
     int size = (int) cf1Vec.size();
     vector<Point *> points = createPointVector(cf1Vec, cf2Vec, size);
-    float temp;
-    for (Point* p : points) {
-        temp = dev(*p, current.lin_reg);
-        if ( temp > current.threshold) {
+    for (Point *p: points){
+        if(exceeding(*p, current)){
             string description = current.feature1 + "-" + current.feature2;
             reports.emplace_back(description, timeStep);
+            timeStep++;
         }
-        timeStep++;
     }
 }
+
 
 /**
  * @param ts is a reference to a TimeSeries object.

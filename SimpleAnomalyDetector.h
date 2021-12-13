@@ -18,25 +18,29 @@
 #include "timeseries.h"
 #include "minCircle.h"
 
-struct correlatedFeatures{
-	string feature1,feature2;  // names of the correlated features
-	float corrlation;
-	Line lin_reg;
-    Circle minCircle;
-	float threshold;
-};
+//struct correlatedFeatures{
+//	string feature1,feature2;  // names of the correlated features
+//	float corrlation;
+//	Line lin_reg;
+//    Circle minCircle;
+//	float threshold;
+//};
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 
 protected:
     vector<correlatedFeatures> cf;
     void linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts);
-    void learnNormalHelper(const TimeSeries& ts);
+    void learnNormalHelper(const TimeSeries& ts, float minCorrelation);
+    bool exceeding(Point p,const correlatedFeatures &current);
+    void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
+            ,const TimeSeries& ts);
 public:
 	SimpleAnomalyDetector();
 	virtual void learnNormal(const TimeSeries& ts);
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts);
 	vector<correlatedFeatures> getNormalModel(){ return cf;}
+
     virtual ~SimpleAnomalyDetector();
 };
 
