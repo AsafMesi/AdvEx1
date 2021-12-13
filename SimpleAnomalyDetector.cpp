@@ -115,8 +115,8 @@ void SimpleAnomalyDetector::addReport(vector<AnomalyReport> &reports, const corr
         if(exceeding(*p, current)){
             string description = current.feature1 + "-" + current.feature2;
             reports.emplace_back(description, timeStep);
-            timeStep++;
         }
+        timeStep++;
     }
 }
 

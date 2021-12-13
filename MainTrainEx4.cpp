@@ -188,5 +188,4 @@ void seperated_tests(){
 }
 int main(){
 run_main_train();
-//seperated_tests();
 }
