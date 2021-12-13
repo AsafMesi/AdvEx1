@@ -15,7 +15,7 @@ public:
     HybridAnomalyDetector();
     virtual ~HybridAnomalyDetector();
     virtual void learnNormal(const TimeSeries& ts);
-    bool exceeding(Point p,const correlatedFeatures &current) override;
+    virtual bool exceeding(Point p,const correlatedFeatures &current);
 
 };
 

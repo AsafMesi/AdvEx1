@@ -10,12 +10,12 @@
 #define PRECISION 1.1
 
 HybridAnomalyDetector::HybridAnomalyDetector() {
-    // TODO Auto-generated constructor stub
+
 
 }
 
 HybridAnomalyDetector::~HybridAnomalyDetector() {
-    // TODO Auto-generated destructor stub
+
 }
 
 void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
