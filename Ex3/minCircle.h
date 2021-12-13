@@ -24,6 +24,11 @@ using namespace std;
 // ------------ DO NOT CHANGE -----------
 
 class Circle{
+    friend ostream& operator<<(ostream& os, const Circle &c ) {
+        os << "Center: (" + to_string(c.center.x) + ", " + to_string(c.center.y) + ")" +
+        "Radius: " +to_string(c.radius);
+        return os;
+    }
 public:
     Point center;
     float radius;

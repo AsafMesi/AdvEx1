@@ -4,7 +4,6 @@
 #include "anomaly_detection_util.h"
 
 
-
 // Function to return the euclidean distance
 // between two points
 // distance((x1,y1), (x2,y2)) = sqrt( (x2-x1)^2 + (y2-y1)^2 )

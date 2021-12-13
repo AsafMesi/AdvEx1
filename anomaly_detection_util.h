@@ -11,6 +11,8 @@
 #define ADVEX1_ANOMALY_DETECTION_UTIL_H
 #include "vector"
 
+using namespace std;
+
 // 'a' is the slope, 'b' is the y-axis intersection.
 class Line{
 public:

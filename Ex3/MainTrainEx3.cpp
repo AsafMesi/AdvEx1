@@ -1,8 +1,14 @@
-//
-// Created by DanMa on 13/12/2021.
-//
+#include <iostream>
+#include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+#include "minCircle.h"
+#include <chrono>
 
-#include "MainTrain.h"
+using namespace std;
+using namespace std::chrono;
+
 
 Point** generate(Point center,int R, size_t size){
     Point** p =new Point*[size];
@@ -19,7 +25,7 @@ Point** generate(Point center,int R, size_t size){
 
 int main(){
     srand (time(NULL));
-    const size_t N=5;
+    const size_t N=250;
     float R=10+rand()%1000;
     float cx=-500+rand()%1001;
     float cy=-500+rand()%1001;
@@ -70,5 +76,7 @@ int main(){
     delete[] ps_copy;
 
     cout<<"done"<<endl;
+
+    cout<<c<<endl;
     return 0;
 }

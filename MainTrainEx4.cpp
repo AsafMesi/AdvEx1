@@ -85,7 +85,9 @@ void checkCorrelation(correlatedFeatures c,string f1, string f2, float a, float 
                 if(c.corrlation<=0.5)
                     cout<<f1<<"-"<<f2<<" wrong correlation detected (-2)"<<endl;
                 if(c.threshold>111)
-                    cout<<f1<<"-"<<f2<<" wrong value of the radius (-18)"<<endl;
+                    cout<<f1<<"-"<<f2<<" wrong value of the radius (-18)\n"
+                    "expected 111, got " + to_string(c.threshold) +
+                    " Radius without *1.1 = " + to_string(c.minCircle.radius) << endl;
             }
         }
     }
