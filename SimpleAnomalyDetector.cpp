@@ -28,17 +28,18 @@ void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
      * Goes through each correlated features found in learnNormalHelper
      * and initialize its members.
      */
-    for (auto linearCf: cf){
-        linearInit(linearCf, ts);
+    int size = cf.size();
+    for (int i=0; i<size; i++){
+        linearInit(i, ts);
     }
 }
 
-void SimpleAnomalyDetector::linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts){
-    vector<float> xVec = ts.getFeatureData(linearCf.feature1);
-    vector<float> yVec = ts.getFeatureData(linearCf.feature2);
+void SimpleAnomalyDetector::linearInit(int i, const TimeSeries& ts){
+    vector<float> xVec = ts.getFeatureData(cf[i].feature1);
+    vector<float> yVec = ts.getFeatureData(cf[i].feature2);
     vector<Point*> pVec = createPointVector(xVec, yVec, ts.getNumberOfRows());
-    linearCf.lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
-    linearCf.threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), linearCf.lin_reg);
+    cf[i].lin_reg = linear_reg(&pVec[0], ts.getNumberOfRows());
+    cf[i].threshold = PRECISION * maxDev(&pVec[0], ts.getNumberOfRows(), cf[i].lin_reg);
 }
 
 /**

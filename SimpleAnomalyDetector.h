@@ -30,10 +30,9 @@ class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
 
 protected:
     vector<correlatedFeatures> cf;
-    void linearInit(correlatedFeatures &linearCf ,const TimeSeries& ts);
+    void linearInit(int i, const TimeSeries& ts);
     void learnNormalHelper(const TimeSeries& ts, float minCorrelation);
-    void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current
-            ,const TimeSeries& ts);
+    void addReport(vector<AnomalyReport> &reports, const correlatedFeatures &current, const TimeSeries& ts);
     virtual bool exceeding(Point p,const correlatedFeatures &current);
 public:
 	SimpleAnomalyDetector();

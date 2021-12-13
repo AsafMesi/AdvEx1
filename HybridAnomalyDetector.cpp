@@ -22,24 +22,24 @@ void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
 
         // fill cf without type, correlation > MIN_CORRELATION_VALUE
         learnNormalHelper(ts, CIRCLE_CORRELATION);
-
-        for (auto currentCf: cf){
-            if (currentCf.corrlation <= 0.9){
-                circleInit(currentCf, ts);
+        int size = cf.size();
+        for (int i=0; i<size; i++){
+            if (cf[i].corrlation <= 0.9){
+                circleInit(i, ts);
         }
             else {
-                linearInit(currentCf, ts);
+                linearInit(i, ts);
             }
     }
 }
 
-void HybridAnomalyDetector:: circleInit(correlatedFeatures &circleCf , const TimeSeries& ts){
-    vector<float> xVec = ts.getFeatureData(circleCf.feature1);
-    vector<float> yVec = ts.getFeatureData(circleCf.feature2);
+void HybridAnomalyDetector:: circleInit(int i, const TimeSeries& ts){
+    vector<float> xVec = ts.getFeatureData(cf[i].feature1);
+    vector<float> yVec = ts.getFeatureData(cf[i].feature2);
     vector<Point*> pVec = createPointVector(xVec, yVec, ts.getNumberOfRows());
     Point** points = pVec.data();
-    circleCf.minCircle = findMinCircle(points, ts.getNumberOfRows());
-    circleCf.threshold = PRECISION * circleCf.minCircle.radius;
+    cf[i].minCircle = findMinCircle(points, ts.getNumberOfRows());
+    cf[i].threshold = PRECISION * cf[i].minCircle.radius;
 }
 
 bool HybridAnomalyDetector::exceeding(Point p,const correlatedFeatures &current) {

@@ -13,9 +13,10 @@ using namespace std;
 struct correlatedFeatures{
     string feature1,feature2;  // names of the correlated features
     float corrlation;
+    float threshold;
     Line lin_reg;
     Circle minCircle;
-    float threshold;
+
 };
 
 class AnomalyReport{

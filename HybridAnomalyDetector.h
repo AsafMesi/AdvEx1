@@ -10,7 +10,7 @@
 
 class HybridAnomalyDetector:public SimpleAnomalyDetector {
 protected:
-    void circleInit(correlatedFeatures &circleCf , const TimeSeries& ts);
+    void circleInit(int i, const TimeSeries& ts);
 public:
     HybridAnomalyDetector();
     virtual ~HybridAnomalyDetector();
