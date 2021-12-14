@@ -9,6 +9,20 @@
 
 #include "minCircle.h"
 #include "random"
+#define ALIGN 0.99999999999999999999888889
+/**
+ * @param points is a pointer to an array of pointers to Point.
+ * @param size is the size of the array
+ * @return points as vector.
+ */
+std::vector<Point> arrToVec(Point** points, size_t size){
+    std::vector<Point> vector;
+    vector.reserve(size);
+    for(int i = 0; i < size; i++){
+        vector.push_back(*(points[i]));
+    }
+    return vector;
+}
 
 /**
  * This function returns the distance between two points following this  formula:
@@ -204,7 +218,9 @@ Circle findMinCircleHelper(vector<Point>& P,
 Circle findMinCircle(Point** points, size_t size)
 {
     vector<Point> P_copy = arrToVec(points, size);
-    return findMinCircleHelper(P_copy, {}, P_copy.size());
+    Circle c = findMinCircleHelper(P_copy, {}, P_copy.size());
+    float newRad = ALIGN * c.radius;
+    return {c.center, newRad};
 }
 
 

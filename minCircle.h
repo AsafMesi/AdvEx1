@@ -52,6 +52,7 @@ Circle circle_from(const Point& A, const Point& B, const Point& C);
 Point getCircleCenter(float bx, float by, float cx, float cy);
 bool isInside(const Circle& c, const Point& p);
 float distance(const Point& a, const Point& b);
+std::vector<Point> arrToVec(Point** points, size_t size);
 
 
 

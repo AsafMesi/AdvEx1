@@ -9,7 +9,7 @@
 
 #include "HybridAnomalyDetector.h"
 #define CIRCLE_CORRELATION 0.5
-#define PRECISION 1.1
+#define PRECISION 1.09
 
 HybridAnomalyDetector::HybridAnomalyDetector() = default;
 
