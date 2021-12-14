@@ -59,7 +59,7 @@ void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts, float minCor
     vector<string> features = ts.getFeatures();
     int c; // if equals (-1) no correlation found.
     float m;
-    vector<float> cVec, xVec;
+    vector<float> xVec;
 
     /*
      * For each feature - goes through all features and get maximal correlative feature.
@@ -74,19 +74,12 @@ void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts, float minCor
             float p = fabs(pearson(&xVec[0], &yVec[0], ts.getNumberOfRows()));
             if (p > m) {
                 m = p; c = j;
-                cVec = yVec;
             }
         }
-        correlatedFeatures temp = {};
 
-        /*
-         * If found correlative feature - add them to the correlation feature vector.
-         */
+        // If found correlative feature - add them to the correlation feature vector. (feature names and correlation).
         if (c != -1) {
-            temp.corrlation = m;
-            temp.feature1 = features[i];
-            temp.feature2 = features[c];
-            cf.push_back(temp);
+            cf.push_back({ features[i], features[c], m, });
         }
     }
 }

@@ -203,7 +203,7 @@ Circle findMinCircleHelper(vector<Point>& P,
  */
 Circle findMinCircle(Point** points, size_t size)
 {
-    vector<Point> P_copy = arrToVect(points, size);
+    vector<Point> P_copy = arrToVec(points, size);
     return findMinCircleHelper(P_copy, {}, P_copy.size());
 }
 

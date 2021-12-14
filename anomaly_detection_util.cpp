@@ -6,8 +6,7 @@
  *  name: Dan Marom.
  *  ID: 208995035.
  */
- 
-#include "iostream"
+
 #include <cmath>
 #include <vector>
 #include "anomaly_detection_util.h"
@@ -163,7 +162,7 @@ std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> 
  * @param size is the size of the array
  * @return points as vector.
  */
-std::vector<Point> arrToVect(Point** points, size_t size){
+std::vector<Point> arrToVec(Point** points, size_t size){
     std::vector<Point> vector;
     vector.reserve(size);
 for(int i = 0; i < size; i++){

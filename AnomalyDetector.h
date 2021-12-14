@@ -18,15 +18,6 @@
 #include <cmath>
 using namespace std;
 
-struct correlatedFeatures{
-    string feature1,feature2;  // names of the correlated features
-    float corrlation;
-    float threshold;
-    Line lin_reg;
-    Circle minCircle;
-
-};
-
 class AnomalyReport{
 public:
 	const string description;
@@ -43,7 +34,6 @@ class TimeSeriesAnomalyDetector {
 public:
 	virtual void learnNormal(const TimeSeries& ts)=0;
 	virtual vector<AnomalyReport> detect(const TimeSeries& ts)=0;
-    // get corrleation
 	virtual ~TimeSeriesAnomalyDetector()= default;
 };
 

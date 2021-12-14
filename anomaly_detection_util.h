@@ -38,6 +38,6 @@ float dev(Point p,Point** points, int size);
 float dev(Point p,Line l);
 float maxDev(Point** points,  int size, Line &l);
 std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> y, int size);
-std::vector<Point> arrToVect(Point** points, size_t size);
+std::vector<Point> arrToVec(Point** points, size_t size);
 
 #endif //ADVEX1_ANOMALY_DETECTION_UTIL_H
