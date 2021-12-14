@@ -9,7 +9,6 @@
 
 #include "SimpleAnomalyDetector.h"
 #define PRECISION 1.1
-#define CIR_CORRELATION 0.5
 #define LINEAR_CORRELATION 0.9
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
@@ -17,7 +16,10 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 /**
  * @param ts is a reference to a TimeSeries object.
  *
- * This function
+ * This function take ts object with a given data that considers to be normal data,
+ * and model it's mode.
+ * That way, when live data will be analyzed, ts will have this data to compare with,
+ * and in some cases report an anomaly.
  */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
@@ -89,6 +91,13 @@ void SimpleAnomalyDetector::learnNormalHelper(const TimeSeries& ts, float minCor
     }
 }
 
+/**
+ * @param p is the point needed to check if exceeding from the defined correlation.
+ * @param current is the correlated feature p is checked with.
+ * @return true if exceeding, else false.
+ *
+ * This function checks if a given point p is exceeding from the allowed threshold.
+ */
 bool SimpleAnomalyDetector::exceeding(Point p, const correlatedFeatures &current) {
     return (dev(p, current.lin_reg) > current.threshold);
 }

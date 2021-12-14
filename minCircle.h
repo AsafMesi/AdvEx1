@@ -1,6 +1,11 @@
-//
-// Created by DanMa on 11/12/2021.
-//
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #ifndef ANOMALY_DETECTION_UTIL_CPP_MINCIRCLE_H
 #define ANOMALY_DETECTION_UTIL_CPP_MINCIRCLE_H
@@ -39,8 +44,6 @@ public:
 // --------------------------------------
 
 Circle findMinCircle(Point** points, size_t size);
-
-// you can add here additional methods
 Circle findMinCircleHelper(vector<Point>& P, vector<Point> R, int n);
 Circle baseCase(vector<Point>& P);
 bool is_valid_circle(const Circle& c, const vector<Point>& P);

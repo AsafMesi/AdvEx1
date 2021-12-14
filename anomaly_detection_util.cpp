@@ -158,6 +158,11 @@ std::vector<Point*> createPointVector (std::vector<float> x, std::vector<float> 
     return points;
 }
 
+/**
+ * @param points is a pointer to an array of pointers to Point.
+ * @param size is the size of the array
+ * @return points as vector.
+ */
 std::vector<Point> arrToVect(Point** points, size_t size){
     std::vector<Point> vector;
     vector.reserve(size);

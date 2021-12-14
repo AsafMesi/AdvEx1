@@ -1,4 +1,11 @@
-
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #ifndef ANOMALYDETECTOR_H_
 #define ANOMALYDETECTOR_H_
@@ -10,6 +17,7 @@
 #include "minCircle.h"
 #include <cmath>
 using namespace std;
+
 struct correlatedFeatures{
     string feature1,feature2;  // names of the correlated features
     float corrlation;

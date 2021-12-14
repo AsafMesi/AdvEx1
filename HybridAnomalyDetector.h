@@ -1,6 +1,11 @@
-//
-// Created by asaf4 on 12/12/2021.
-//
+/**
+ * Authors:
+ *  name: Asaf Mesilaty.
+ *  ID: 318646072.
+ *
+ *  name: Dan Marom.
+ *  ID: 208995035.
+ */
 
 #ifndef ANOMALY_DETECTION_UTIL_CPP_HYBRIDANOMALYDETECTOR_H
 #define ANOMALY_DETECTION_UTIL_CPP_HYBRIDANOMALYDETECTOR_H
