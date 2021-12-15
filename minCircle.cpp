@@ -9,7 +9,6 @@
 
 #include "minCircle.h"
 #include "random"
-#define ALIGN 0.99999999999999999999888889
 /**
  * @param points is a pointer to an array of pointers to Point.
  * @param size is the size of the array
@@ -32,11 +31,10 @@ std::vector<Point> arrToVec(Point** points, size_t size){
  * @param b is the 2nd point.
  * @return the distance between a and b.
  */
-float distance(const Point& a, const Point& b)
+double distance(const Point& a, const Point& b)
 {
-    float xDif = (a.x-b.x)*(a.x-b.x);
-    float yDif = (a.y-b.y)*(a.y-b.y);
-    return sqrt(xDif+yDif);
+    return sqrt(pow(a.x - b.x, 2)
+                + pow(a.y - b.y, 2));
 }
 
 /**
@@ -49,7 +47,7 @@ float distance(const Point& a, const Point& b)
  */
 bool isInside(const Circle& c, const Point& p)
 {
-    return distance(c.center, p) < (c.radius + 1);
+    return distance(c.center, p) <= c.radius;
 }
 
 
@@ -72,13 +70,13 @@ bool isInside(const Circle& c, const Point& p)
  * @param cy stands for y-Axis difference between Point C and Point A (C.y - A.y).
  * @return the center of the circle generated with A, B and C.
  */
-Point getCircleCenter(float bx, float by, float cx, float cy)
+Point getCircleCenter(double bx, double by, double cx, double cy)
 {
-    float B = bx * bx + by * by;
-    float C = cx * cx + cy * cy;
-    float D = bx * cy - by * cx;
-    return { (cy * B - by * C) / (2 * D),
-             (bx * C - cx * B) / (2 * D) };
+    double B = bx * bx + by * by;
+    double C = cx * cx + cy * cy;
+    double D = bx * cy - by * cx;
+    return { static_cast<float>((cy * B - by * C) / (2 * D)),
+             static_cast<float> ((bx * C - cx * B) / (2 * D)) };
 }
 
 /**
@@ -97,7 +95,7 @@ Circle circle_from(const Point& A, const Point& B,
 
     I.x += A.x;
     I.y += A.y;
-    return {I, distance(I, A)};
+    return {I, static_cast<float>(distance(I, A))};
 }
 
 /**
@@ -109,13 +107,13 @@ Circle circle_from(const Point& A, const Point& B,
  */
 Circle circle_from(const Point A, const Point B)
 {
-    float cx = A.x + B.x / 2;
-    float cy = A.y + B.y / 2;
+
     // Set the center to be the midpoint of A and B
-    Point C = { cx, cy };
+    Point C = { static_cast<float> (A.x + B.x / 2.0),
+                static_cast<float>(A.y + B.y / 2.0)};
 
     // Set the radius to be half the distance AB
-    return {C, distance(A, B) / 2 };
+    return {C, static_cast<float>(distance(A, B) / 2.0) };
 }
 
 // Function to check whether a circle
@@ -141,7 +139,7 @@ bool is_valid_circle(const Circle& c,
  */
 Circle baseCase(vector<Point>& P)
 {
-    assert(P.size() <= 3);
+
     if (P.empty()) {
         return { { 0, 0 }, 0 };
     }
@@ -183,18 +181,9 @@ Circle findMinCircleHelper(vector<Point>& P,
         return baseCase(R);
     }
 
-    // Pick a random point randomly
-    int idx = rand() % n;
-    Point p = P[idx];
-
-    // Put the picked point at the end of P
-    // since it's more efficient than
-    // deleting from the middle of the vector
-    swap(P[idx], P[n - 1]);
-
-    // Get the MEC circle d from the
-    // set of points P - {p}
+    // find MEC without last point
     Circle d = findMinCircleHelper(P, R, n - 1);
+    Point p = P[n-1];
 
     // If d contains p, return d
     if (isInside(d, p)) {
@@ -218,9 +207,8 @@ Circle findMinCircleHelper(vector<Point>& P,
 Circle findMinCircle(Point** points, size_t size)
 {
     vector<Point> P_copy = arrToVec(points, size);
-    Circle c = findMinCircleHelper(P_copy, {}, P_copy.size());
-    float newRad = ALIGN * c.radius;
-    return {c.center, newRad};
+    return findMinCircleHelper(P_copy, {}, P_copy.size());
+
 }
 
 

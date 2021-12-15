@@ -49,9 +49,9 @@ Circle baseCase(vector<Point>& P);
 bool is_valid_circle(const Circle& c, const vector<Point>& P);
 Circle circle_from(Point A, Point B);
 Circle circle_from(const Point& A, const Point& B, const Point& C);
-Point getCircleCenter(float bx, float by, float cx, float cy);
+Point getCircleCenter(double bx, double by, double cx, double cy);
 bool isInside(const Circle& c, const Point& p);
-float distance(const Point& a, const Point& b);
+double distance(const Point& a, const Point& b);
 std::vector<Point> arrToVec(Point** points, size_t size);
 
 
