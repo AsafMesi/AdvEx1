@@ -7,9 +7,6 @@
  *  ID: 208995035.
  */
 
-#ifndef ANOMALY_DETECTION_UTIL_CPP_MINCIRCLE_H
-#define ANOMALY_DETECTION_UTIL_CPP_MINCIRCLE_H
-
 
 #ifndef MINCIRCLE_H_
 #define MINCIRCLE_H_
@@ -44,20 +41,8 @@ public:
 // --------------------------------------
 
 Circle findMinCircle(Point** points, size_t size);
-Circle findMinCircleHelper(vector<Point>& P, vector<Point> R, int n);
-Circle baseCase(vector<Point>& P);
-bool is_valid_circle(const Circle& c, const vector<Point>& P);
-Circle circle_from(Point A, Point B);
-Circle circle_from(const Point& A, const Point& B, const Point& C);
-Point getCircleCenter(double bx, double by, double cx, double cy);
-bool isInside(const Circle& c, const Point& p);
-double distance(const Point& a, const Point& b);
-std::vector<Point> arrToVec(Point** points, size_t size);
-
-
+float distance(Point a, Point b);
 
 
 #endif /* MINCIRCLE_H_ */
 
-
-#endif //ANOMALY_DETECTION_UTIL_CPP_MINCIRCLE_H

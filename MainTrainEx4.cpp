@@ -86,8 +86,8 @@ void checkCorrelation(correlatedFeatures c,string f1, string f2, float a, float 
                     cout<<f1<<"-"<<f2<<" wrong correlation detected (-2)"<<endl;
                 if(c.threshold>111)
                     cout<<f1<<"-"<<f2<<" wrong value of the radius (-18)\n"
-                    "expected 111, got " + to_string(c.threshold) +
-                    " Radius without *1.1 = " + to_string(c.minCircle.radius) << endl;
+                                       "expected less than 111, got " + to_string(c.threshold) +
+                                       " Radius without *1.1 = " + to_string(c.minCircle.radius) << endl;
             }
         }
     }
@@ -146,6 +146,8 @@ int run_main_train(){
             detected[2]=true;
     });
 
+    cout << cf[2].threshold << endl;
+
     int falseAlarms=r.size();
     for(int i=0;i<3;i++)
         if(!detected[i])
@@ -160,34 +162,6 @@ int run_main_train(){
     return 0;
 }
 
-void seperated_tests(){
-    srand (time(NULL));
-    float a1=1+rand()%10, b1=-50+rand()%100;
-    float a2=1+rand()%20 , b2=-50+rand()%100;
-    float a3=1+rand()%40 , b3=-50+rand()%100;
-
-
-    // test the learned model: (40 points)
-    // expected correlations:
-    //	A-B: y=a1*x+b1
-    //	C-D: y=a2*x+b2
-    //	E-F: y=a3*x+b3
-
-    generateTrainCSV(a1,b1,a2,b2,a3,b3);
-    TimeSeries ts("trainFile.csv");
-    HybridAnomalyDetector ad;
-    ad.learnNormal(ts);
-    vector<correlatedFeatures> cf=ad.getNormalModel();
-
-
-    for_each(cf.begin(),cf.end(),[&a1,&b1,&a2,&b2,&a3,&b3](correlatedFeatures c){
-        checkCorrelation(c,"A","B",a1,b1); // 10 points
-        checkCorrelation(c,"C","D",a2,b2); // 10 points
-        checkCorrelation(c,"E","F",a3,b3); // 20 points
-    });
-
-
-}
 int main(){
 run_main_train();
 }

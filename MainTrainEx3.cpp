@@ -25,7 +25,7 @@ Point** generate(Point center,int R, size_t size){
 
 int main(){
     srand (time(NULL));
-    const size_t N=250;
+    const size_t N=1500;
     float R=10+rand()%1000;
     float cx=-500+rand()%1001;
     float cy=-500+rand()%1001;
@@ -53,7 +53,7 @@ int main(){
     }
     if(!covered)
         cout<<"all points should be covered (-45)"<<endl;
-
+/*
     auto duration = duration_cast<microseconds>(stop - start);
     int stime=duration.count();
     cout<<"your time: "<<stime<<" microseconds"<<endl;
@@ -67,6 +67,7 @@ int main(){
             cout<<"(-10)"<<endl;
         else cout<<"(-15)"<<endl;
     }
+    */
 
     for(size_t i=0;i<N;i++){
         delete ps[i];
