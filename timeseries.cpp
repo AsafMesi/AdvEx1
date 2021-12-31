@@ -19,7 +19,7 @@
  *
  * Adding strings to dest by iterating over text and splitting it by the delimiter ','.
  */
-void splitByComma(vector <string> &dest, const string& text){
+void TimeSeries:: splitByComma(vector <string> &dest, const string& text){
     std::stringstream ss(text);
     while (ss.good()) {
         string elem;
@@ -46,6 +46,10 @@ void TimeSeries::addRow(unordered_map<string, vector<float>> &db, const string& 
         db[key].push_back(stof(val));
     }
 }
+TimeSeries::TimeSeries() {
+    this->numOfRows = 0;
+}
+
 
 /**
  * Constructor.

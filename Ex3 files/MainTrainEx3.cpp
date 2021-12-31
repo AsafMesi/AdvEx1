@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include "minCircle.h"
+#include "../minCircle.h"
 #include <chrono>
 
 using namespace std;

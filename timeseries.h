@@ -24,12 +24,14 @@ int numOfRows;
 
 public:
     explicit TimeSeries(const char *CSVfileName);
+    TimeSeries();
     int getNumberOfRows() const;
     int getNumberOfFeatures() const;
     void addRow(unordered_map<string, vector<float>> &db, const string& row);
     vector<float> getFeatureData (const string& feature) const;
     vector<string> getFeatures() const;
     ~TimeSeries();
+    static void splitByComma(vector <string> &dest, const string& text);
 };
 
 #endif /* TIMESERIES_H_ */
