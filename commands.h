@@ -30,21 +30,33 @@ public:
     // you may add additional methods here
 };
 
-
-
-
 // you may add here helper classes
 class CommandsDataBase {
     TimeSeries *train{};
     TimeSeries *test{};
     float threshold;
+    vector<AnomalyReport> reports;
 public:
-    CommandsDataBase();
+    CommandsDataBase(){
+        this->train = nullptr;
+        this->test = nullptr;
+        this->threshold = 0.9;
+    }
+
     void setTrain(string path);
-    void getTrain();
+    TimeSeries* getTrain(){
+        return this->train;
+    }
 
     void setTest(string path);
-    void getTest();
+
+    TimeSeries* getTest(){
+        return this->test;
+    }
+
+    vector<AnomalyReport> getReports(){
+        return this->reports;
+    }
 
     void setThreshold(float f);
 };
@@ -75,13 +87,21 @@ public:
 
 class updateThresholdCommand : public Command{
     void execute() override;
-
 public:
     updateThresholdCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
 };
 
+class anomalyDetectionCommand : public Command{
+    void execute() override;
+public:
+    anomalyDetectionCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
+};
+
+class printAnomalyCommand : public Command{
+    void execute() override;
+public:
+    printAnomalyCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
+};
+
 #endif /* COMMANDS_H_ */
-
-
-
 #endif //ANOMALY_DETECTION_UTIL_CPP_COMMANDS_H

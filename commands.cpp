@@ -7,8 +7,23 @@
 // implement here your command classes
 
 
-// if user chose 2
+// if user chose 4
+void printAnomalyCommand :: execute() {
+    vector<AnomalyReport> reports =  this->cdb->getReports();
+    for(auto & report : reports){
+        cout << report.timeStep <<"\t" << endl;
+    }
+    cout << "Done.";
+}
 
+// if user chose 3
+void anomalyDetectionCommand :: execute() {
+    HybridAnomalyDetector had;
+    had.learnNormal(*(this->cdb->getTrain()));
+    this->cdb->getReports()= had.detect(*(this->cdb->getTest()));
+}
+
+// if user chose 2
 void updateThresholdCommand ::execute() {
     float f;
     cout << "The current correlation threshold is 0.9\n";
@@ -21,7 +36,6 @@ void updateThresholdCommand ::execute() {
     }
     this->cdb->setThreshold(f);
 }
-
 
 // if user chose 1
 void uploadCommand :: execute() {

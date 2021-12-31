@@ -122,7 +122,6 @@ void SimpleAnomalyDetector::addReport(vector<AnomalyReport> &reports, const corr
     }
 }
 
-
 /**
  * @param ts is a reference to a TimeSeries object.
  * @return vector of Anomaly Reports.
