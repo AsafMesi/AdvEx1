@@ -29,8 +29,8 @@ struct correlatedFeatures{
 };
 
 class SimpleAnomalyDetector:public TimeSeriesAnomalyDetector{
-
 protected:
+    float globalThreshold = 0.9;
     vector<correlatedFeatures> cf;
     void linearInit(int i, const TimeSeries& ts);
     void learnNormalHelper(const TimeSeries& ts, float minCorrelation);

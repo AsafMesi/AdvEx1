@@ -9,7 +9,6 @@
 
 #include "SimpleAnomalyDetector.h"
 #define PRECISION 1.1
-#define LINEAR_CORRELATION 0.9
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
@@ -24,7 +23,7 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
 
     // fill cf without type, correlation > MIN_CORRELATION_VALUE
-    learnNormalHelper(ts, LINEAR_CORRELATION);
+    learnNormalHelper(ts, this->globalThreshold);
 
     /*
      * Goes through each correlated features found in learnNormalHelper

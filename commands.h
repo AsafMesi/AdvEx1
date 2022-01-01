@@ -16,8 +16,21 @@
 #include <fstream>
 #include <vector>
 #include "HybridAnomalyDetector.h"
+#include "timeseries.h"
 
 using namespace std;
+
+typedef struct compactAnomaly{
+    int start;
+    int end;
+    bool TP = false;
+
+    compactAnomaly(int s, int e){
+        this->start = s;
+        this->end = e;
+        this->TP = false;
+    }
+}compactAnomaly;
 
 class DefaultIO{
 public:
@@ -28,7 +41,7 @@ public:
     virtual ~DefaultIO(){}
 
     // you may add additional methods here
-    void readAndCreate(string& fileName, const char* delim){
+    void readAndCreate(string fileName, const char* delim){
         ofstream out(fileName);
         string row;
         while ((row = read())!= delim){
@@ -47,6 +60,7 @@ typedef struct CommandsDataBase {
     HybridAnomalyDetector had;
     float threshold = 0.9;
     vector<AnomalyReport> reports;
+    vector<compactAnomaly> compactReports;
 } CommandsDataBase;
 
 
@@ -76,7 +90,8 @@ public:
 class anomalyDetectionCommand : public Command{
     void execute(CommandsDataBase* cdb) override;
 public:
-    anomalyDetectionCommand(DefaultIO* dio) : Command(dio){};
+    explicit anomalyDetectionCommand(DefaultIO* dio) : Command(dio){};
+    void generateCompactReports(CommandsDataBase* cdb);
 };
 
 class printAnomalyCommand : public Command{
@@ -85,5 +100,15 @@ public:
     printAnomalyCommand(DefaultIO* dio) : Command(dio){};
 };
 
+
+class countAnomalyCommand : public Command{
+    compactAnomaly ca;
+    void execute(CommandsDataBase* cdb) override;
+    countAnomalyCommand(DefaultIO* dio) : Command(dio);
+public:
+    void generateAnomaliesVector(vector<compactAnomaly> &vec);
+
+
+};
 #endif /* COMMANDS_H_ */
 #endif //ANOMALY_DETECTION_UTIL_CPP_COMMANDS_H

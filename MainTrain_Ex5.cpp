@@ -82,8 +82,9 @@ void check(string outputFile,string expectedOutputFile){
 
 //small test
 int main(){
-    STDtest std("input.txt","output.txt");
-    std.write(std.read());
+    STDtest std(R"(C:\Users\DanMa\CLionProjects\APProject\input.txt)",
+                R"(C:\Users\DanMa\CLionProjects\APProject\output.txt)");
+    std.readAndCreate(R"(C:\Users\DanMa\CLionProjects\APProject\train.csv)", "done");
     std.close();
     //CLI cli(&std);
     //cli.start();

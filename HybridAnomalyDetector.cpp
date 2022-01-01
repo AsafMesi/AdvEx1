@@ -29,7 +29,7 @@ void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
         learnNormalHelper(ts, CIRCLE_CORRELATION);
         int size = cf.size();
         for (int i=0; i<size; i++){
-            if (cf[i].corrlation <= 0.9){
+            if (cf[i].corrlation <= this.globalThreshold){
                 circleInit(i, ts);
         }
             else {
