@@ -28,79 +28,61 @@ public:
     virtual ~DefaultIO(){}
 
     // you may add additional methods here
+    void readAndCreate(string& fileName, const char* delim){
+        ofstream out(fileName);
+        string row;
+        while ((row = read())!= delim){
+            out << row << endl;
+        }
+        out.close();
+    }
+
 };
+
 
 // you may add here helper classes
-class CommandsDataBase {
+typedef struct CommandsDataBase {
     TimeSeries *train{};
     TimeSeries *test{};
-    float threshold;
+    HybridAnomalyDetector had;
+    float threshold = 0.9;
     vector<AnomalyReport> reports;
-public:
-    CommandsDataBase(){
-        this->train = nullptr;
-        this->test = nullptr;
-        this->threshold = 0.9;
-    }
-
-    void setTrain(string path);
-    TimeSeries* getTrain(){
-        return this->train;
-    }
-
-    void setTest(string path);
-
-    TimeSeries* getTest(){
-        return this->test;
-    }
-
-    vector<AnomalyReport> getReports(){
-        return this->reports;
-    }
-
-    void setThreshold(float f);
-};
-
-
-
-
+} CommandsDataBase;
 
 
 // you may edit this class
 class Command{
 public:
-    Command(DefaultIO* dio, CommandsDataBase* cdb):dio(dio),cdb(cdb){}
-    virtual void execute()=0;
+    Command(DefaultIO* dio):dio(dio){}
+    virtual void execute(CommandsDataBase* cdb)=0;
     virtual ~Command(){}
 
 protected:
     DefaultIO* dio;
-    CommandsDataBase* cdb;
 };
 
-class uploadCommand : public Command{
-    void execute() override;
+class uploadCSVCommand : public Command{
+    void execute(CommandsDataBase* cdb) override;
 public:
-    uploadCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
-    void generateCSV(const char *s, const char *delim, const char *name);
+    explicit uploadCSVCommand(DefaultIO* dio) : Command(dio){};
 };
 
 class updateThresholdCommand : public Command{
-    void execute() override;
+    void execute(CommandsDataBase* cdb) override;
 public:
-    updateThresholdCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
+    explicit updateThresholdCommand(DefaultIO* dio) : Command(dio){};
 };
 
 class anomalyDetectionCommand : public Command{
-    void execute() override;
+    void execute(CommandsDataBase* cdb) override;
 public:
-    anomalyDetectionCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
+    anomalyDetectionCommand(DefaultIO* dio) : Command(dio){};
 };
 
 class printAnomalyCommand : public Command{
-    void execute() override;
+    void execute(CommandsDataBase* cdb) override;
 public:
-    printAnomalyCommand(DefaultIO* dio, CommandsDataBase* cdb) : Command(dio, cdb){};
+    printAnomalyCommand(DefaultIO* dio) : Command(dio){};
 };
 
 #endif /* COMMANDS_H_ */

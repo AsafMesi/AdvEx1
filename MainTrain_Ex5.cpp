@@ -83,11 +83,13 @@ void check(string outputFile,string expectedOutputFile){
 //small test
 int main(){
     STDtest std("input.txt","output.txt");
-    CLI cli(&std);
-    cli.start();
+    std.write(std.read());
     std.close();
-    check("output.txt","expectedOutput.txt");
-    cout<<"done"<<endl;
+    //CLI cli(&std);
+    //cli.start();
+    //std.close();
+    //check("output.txt","expectedOutput.txt");
+    //cout<<"done"<<endl;
     return 0;
 }
 

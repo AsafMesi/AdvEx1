@@ -14,6 +14,7 @@ void CLI::start(){
     DefaultIO* dio = new STDtest("input.txt", "output.txt");
     Command *cmd1 = new uploadCommand(dio, cdb);
     cmd1->execute();
+    Command *update = new updateThresholdCommand(dio,cdb)
 
 }
 

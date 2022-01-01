@@ -7,9 +7,6 @@
 #include "CLI.h"
 #include "MainTrain_Ex5.cpp"
 
-//int main(){
-//    STDtest std("input.txt","output.txt");
-//    CLI cli(&std);
-//    cli.start();
-//    std.close();
-//}
+int main(){
+
+}
