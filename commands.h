@@ -24,11 +24,13 @@ typedef struct compactAnomaly{
     int start;
     int end;
     bool TP = false;
+    string des;
 
     compactAnomaly(int s, int e){
         this->start = s;
         this->end = e;
         this->TP = false;
+        this->des = "";
     }
 }compactAnomaly;
 
@@ -52,7 +54,6 @@ public:
 
 };
 
-
 // you may add here helper classes
 typedef struct CommandsDataBase {
     TimeSeries *train{};
@@ -62,7 +63,6 @@ typedef struct CommandsDataBase {
     vector<AnomalyReport> reports;
     vector<compactAnomaly> compactReports;
 } CommandsDataBase;
-
 
 // you may edit this class
 class Command{
@@ -91,7 +91,7 @@ class anomalyDetectionCommand : public Command{
     void execute(CommandsDataBase* cdb) override;
 public:
     explicit anomalyDetectionCommand(DefaultIO* dio) : Command(dio){};
-    void generateCompactReports(CommandsDataBase* cdb);
+    void generateCompactReports(CommandsDataBase* cdb, vector<compactAnomaly>& ca);
 };
 
 class printAnomalyCommand : public Command{
@@ -109,6 +109,7 @@ public:
     void generateAnomaliesVector(vector<compactAnomaly> &vec);
 
 
+    bool checkAnomaliesIntersection(vector<compactAnomaly> ca, compactAnomaly anomaly);
 };
 #endif /* COMMANDS_H_ */
 #endif //ANOMALY_DETECTION_UTIL_CPP_COMMANDS_H

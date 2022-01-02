@@ -12,6 +12,7 @@
 
 SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
 
+
 /**
  * @param ts is a reference to a TimeSeries object.
  *
@@ -138,5 +139,7 @@ vector<AnomalyReport> SimpleAnomalyDetector::detect(const TimeSeries& ts){
 
 SimpleAnomalyDetector::~SimpleAnomalyDetector() = default;
 
-
+void SimpleAnomalyDetector :: setThreshold(float f){
+    this->globalThreshold = f;
+}
 

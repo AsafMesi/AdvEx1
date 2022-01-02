@@ -7,7 +7,11 @@
 // implement here your command classes
 
 
-
+/**
+ * @param vec is the vector we inject compact anomalies to.
+ *
+ * This function inject compat anomalies received to a given compactAnomaly vector.
+ */
 void countAnomalyCommand :: generateAnomaliesVector(vector<compactAnomaly> &vec){
     string s = "";
     vector<string> pair;
@@ -17,10 +21,40 @@ void countAnomalyCommand :: generateAnomaliesVector(vector<compactAnomaly> &vec)
     }
 }
 
-void countAnomalyCommand ::execute(CommandsDataBase *cdb) {
-    vector<compactAnomaly> anomalies;
-    generateAnomaliesVector(anomalies);
+bool countAnomalyCommand :: checkAnomaliesIntersection(vector<compactAnomaly> ca, compactAnomaly anomaly){
 
+    bool flag = false;
+    for(auto &elem : ca){
+
+        /*
+         * takes care of elem fully contained anomaly, and elem intersect with nomaly
+         */
+        if(elem.start <= anomaly.start && elem.end >= anomaly.start){
+            elem.TP = true;
+            anomaly.TP = true;
+            return flag;
+        }
+        if(anomaly.start <= elem.start && anomaly.end >= elem.start){
+            elem.TP = true;
+            anomaly.TP = true;
+            flag = true;
+            return flag;
+        }
+        return flag;
+    }
+}
+
+void countAnomalyCommand ::execute(CommandsDataBase *cdb) {
+
+    // initialize both expected and detected vectors.
+    vector<compactAnomaly> expectedAnomalies;
+    vector<compactAnomaly> detectedAnomalies;
+    generateAnomaliesVector(expectedAnomalies);
+
+    for(auto &anomaly : detectedAnomalies){
+        checkAnomaliesIntersection(expectedAnomalies, anomaly);
+    }
+    // to fucking do - check tp number
 }
 
 
@@ -33,23 +67,45 @@ void printAnomalyCommand :: execute(CommandsDataBase* cdb) {
     this->dio->write("Done.");
 }
 
+
+
 // for every cf - the anomalies are ordered in an increasing order.
-void anomalyDetectionCommand :: generateCompactReports(CommandsDataBase* cdb){
-    int size = cdb->reports.size();
-    for(int i = 0; i < size; i++){
-        // fucking loop man.
+void anomalyDetectionCommand :: generateCompactReports(CommandsDataBase* cdb, vector<compactAnomaly>& ca){
+    int i = 1, j = 1;
+
+    // minus one because we access i+1 in the loop.
+    int size = cdb->reports.size() - 1;
+
+    vector<AnomalyReport> rep = cdb->reports;
+    ca[0] = compactAnomaly(cdb->reports[0].timeStep,cdb->reports[0].timeStep);
+    ca[0].des = cdb->reports[0].description;
+
+    for (i; i < size; i++){
+       if((rep[i].description == rep[i+1].description) &&
+               ((rep[i].timeStep + 1) == (rep[i+1].timeStep))){
+
+           // increase compact Report end.
+           ca[j].end += 1;
+       }
+       else{
+           j++;
+
+           // creates new compact anomaly.
+           ca[j] = compactAnomaly(cdb->reports[i].timeStep,cdb->reports[i].timeStep);
+           ca[j].des = cdb->reports[i].description;
     }
 }
 
 // if user chose 3
 void anomalyDetectionCommand :: execute(CommandsDataBase* cdb) {
 
-    cdb->train.setThreshold(cdb->threshold);
-    cdb->test.setThreshold(cdb->threshold);
+    // update new threshold.
+    cdb->had.setThreshold(cdb->threshold);
 
     cdb->had.learnNormal(*(cdb->train));
     cdb->reports= cdb->had.detect(*(cdb->test));
-    generateCompactReports(CommandsDataBase* cdb);
+
+    generateCompactReports(cdb, cdb->compactReports);
 }
 
 // if user chose 2
