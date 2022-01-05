@@ -162,6 +162,6 @@ int run_main_train(){
     return 0;
 }
 
-int main(){
-run_main_train();
-}
+//int main(){
+//run_main_train();
+//}

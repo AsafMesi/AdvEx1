@@ -1,6 +1,3 @@
-//
-// Created by DanMa on 30/12/2021.
-//
 /*
  * run2.cpp
  *
@@ -84,13 +81,10 @@ void check(string outputFile,string expectedOutputFile){
 int main(){
     STDtest std(R"(C:\Users\DanMa\CLionProjects\APProject\input.txt)",
                 R"(C:\Users\DanMa\CLionProjects\APProject\output.txt)");
-    std.readAndCreate(R"(C:\Users\DanMa\CLionProjects\APProject\train.csv)", "done");
+    CLI cli(&std);
+    cli.start();
     std.close();
-    //CLI cli(&std);
-    //cli.start();
-    //std.close();
-    //check("output.txt","expectedOutput.txt");
-    //cout<<"done"<<endl;
+    check("output.txt","expectedOutput.txt");
+    cout<<"done"<<endl;
     return 0;
 }
-

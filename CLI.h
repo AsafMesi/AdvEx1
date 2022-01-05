@@ -20,12 +20,10 @@ class CLI {
     DefaultIO* dio;
     // you can add data members
 public:
-    CLI(DefaultIO* dio);
+    CLI(DefaultIO* dio): dio(dio){};
     void start();
     virtual ~CLI();
 };
 
 #endif /* CLI_H_ */
-
-
 #endif //ANOMALY_DETECTION_UTIL_CPP_CLI_H

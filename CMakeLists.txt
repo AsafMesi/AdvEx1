@@ -3,5 +3,4 @@ project(APP)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(APP anomaly_detection_util.cpp timeseries.cpp SimpleAnomalyDetector.cpp minCircle.cpp minCircle.h HybridAnomalyDetector.cpp HybridAnomalyDetector.h "Ex4 files/MainTrainEx4.cpp" MainTrain_Ex5.cpp commands.cpp commands.h CLI.cpp CLI.h ex5Main.cpp)
-#add_executable(APP MainTrain_Ex5.cpp)
+add_executable(APP anomaly_detection_util.cpp timeseries.cpp SimpleAnomalyDetector.cpp minCircle.cpp minCircle.h HybridAnomalyDetector.cpp HybridAnomalyDetector.h MainTrain_Ex5.cpp commands.cpp commands.h CLI.cpp CLI.h)

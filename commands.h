@@ -17,6 +17,7 @@
 #include <vector>
 #include "HybridAnomalyDetector.h"
 #include "timeseries.h"
+#include "map"
 
 using namespace std;
 
@@ -40,9 +41,10 @@ public:
     virtual void write(string text)=0;
     virtual void write(float f)=0;
     virtual void read(float* f)=0;
-    virtual ~DefaultIO(){}
+    virtual ~DefaultIO()= default;
 
     // you may add additional methods here
+    virtual void close() = 0;
     void readAndCreate(string fileName, const char* delim){
         ofstream out(fileName);
         string row;
@@ -97,19 +99,29 @@ public:
 class printAnomalyCommand : public Command{
     void execute(CommandsDataBase* cdb) override;
 public:
-    printAnomalyCommand(DefaultIO* dio) : Command(dio){};
+    explicit printAnomalyCommand(DefaultIO* dio) : Command(dio){};
 };
 
-
 class countAnomalyCommand : public Command{
-    compactAnomaly ca;
     void execute(CommandsDataBase* cdb) override;
-    countAnomalyCommand(DefaultIO* dio) : Command(dio);
 public:
+    explicit countAnomalyCommand(DefaultIO *dio) : Command(dio){};
     void generateAnomaliesVector(vector<compactAnomaly> &vec);
 
+};
 
-    bool checkAnomaliesIntersection(vector<compactAnomaly> ca, compactAnomaly anomaly);
+class terminateCommand : public Command{
+    void execute(CommandsDataBase* cdb) override;
+public:
+    explicit terminateCommand(DefaultIO* dio) : Command(dio){};
+};
+
+class commandFactory {
+    map<string, Command*> cm;
+    DefaultIO* dio;
+public:
+    commandFactory(DefaultIO* dio) : dio(dio){};
+    Command* getCommand(string& key);
 };
 #endif /* COMMANDS_H_ */
 #endif //ANOMALY_DETECTION_UTIL_CPP_COMMANDS_H

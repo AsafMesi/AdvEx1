@@ -3,22 +3,19 @@
 //
 
 #include "CLI.h"
-#include "MainTrain_Ex5.cpp"
-
-
-CLI::CLI(DefaultIO* dio) {
-}
 
 void CLI::start(){
+    string key;
     auto* cdb = new CommandsDataBase();
-    DefaultIO* dio = new STDtest("input.txt", "output.txt");
-    Command *cmd1 = new uploadCommand(dio, cdb);
-    cmd1->execute();
-    Command *update = new updateThresholdCommand(dio,cdb)
-
+    commandFactory cf(this->dio);
+    Command* c;
+    do {
+        key = dio->read();
+        c = cf.getCommand(key);
+        c->execute(cdb);
+    } while (typeid(*c) != typeid(terminateCommand));
 }
 
 
-CLI::~CLI() {
-}
+CLI::~CLI() = default;
 
