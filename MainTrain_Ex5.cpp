@@ -79,8 +79,8 @@ void check(string outputFile,string expectedOutputFile){
 
 //small test
 int main(){
-    STDtest std(R"(C:\Users\DanMa\CLionProjects\APProject\input.txt)",
-                R"(C:\Users\DanMa\CLionProjects\APProject\output.txt)");
+    STDtest std(R"(input.txt)",
+                R"(output.txt)");
     CLI cli(&std);
     cli.start();
     std.close();

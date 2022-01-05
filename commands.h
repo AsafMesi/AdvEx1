@@ -21,7 +21,7 @@
 
 using namespace std;
 
-typedef struct compactAnomaly{
+struct compactAnomaly{
     int start;
     int end;
     bool TP = false;
@@ -33,7 +33,7 @@ typedef struct compactAnomaly{
         this->TP = false;
         this->des = "";
     }
-}compactAnomaly;
+};
 
 class DefaultIO{
 public:
@@ -45,7 +45,7 @@ public:
 
     // you may add additional methods here
     virtual void close() = 0;
-    void readAndCreate(string fileName, const char* delim){
+    void readAndCreate(const string& fileName, const char* delim){
         ofstream out(fileName);
         string row;
         while ((row = read())!= delim){
@@ -57,21 +57,21 @@ public:
 };
 
 // you may add here helper classes
-typedef struct CommandsDataBase {
+struct CommandsDataBase {
     TimeSeries *train{};
     TimeSeries *test{};
     HybridAnomalyDetector had;
     float threshold = 0.9;
     vector<AnomalyReport> reports;
-    vector<compactAnomaly> compactReports;
-} CommandsDataBase;
+    vector<compactAnomaly> compactReports{};
+};
 
 // you may edit this class
 class Command{
 public:
-    Command(DefaultIO* dio):dio(dio){}
+    explicit Command(DefaultIO* dio):dio(dio){}
     virtual void execute(CommandsDataBase* cdb)=0;
-    virtual ~Command(){}
+    virtual ~Command()= default;
 
 protected:
     DefaultIO* dio;
@@ -93,7 +93,6 @@ class anomalyDetectionCommand : public Command{
     void execute(CommandsDataBase* cdb) override;
 public:
     explicit anomalyDetectionCommand(DefaultIO* dio) : Command(dio){};
-    void generateCompactReports(CommandsDataBase* cdb, vector<compactAnomaly>& ca);
 };
 
 class printAnomalyCommand : public Command{
@@ -111,7 +110,9 @@ public:
 };
 
 class terminateCommand : public Command{
-    void execute(CommandsDataBase* cdb) override;
+    void execute(CommandsDataBase* cdb) override {
+        this->dio->close();
+    }
 public:
     explicit terminateCommand(DefaultIO* dio) : Command(dio){};
 };
@@ -120,7 +121,7 @@ class commandFactory {
     map<string, Command*> cm;
     DefaultIO* dio;
 public:
-    commandFactory(DefaultIO* dio) : dio(dio){};
+    explicit commandFactory(DefaultIO* dio) : dio(dio){};
     Command* getCommand(string& key);
 };
 #endif /* COMMANDS_H_ */
