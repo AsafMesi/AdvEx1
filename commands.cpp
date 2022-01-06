@@ -135,7 +135,7 @@ void printAnomalyCommand :: execute(CommandsDataBase* cdb) {
  * If does - update both TP fields of detectedAnomaly and ExpectedAnomaly which intersect to be true, and return true.
  * Else - return false.
  */
-static void checkAndUpdateAnomaliesIntersection(vector<compactAnomaly> ca, compactAnomaly anomaly) {
+static void checkAndUpdateAnomaliesIntersection(vector<compactAnomaly>& ca, compactAnomaly& anomaly) {
     for (auto &elem: ca) {
         if (anomaly.end >= elem.start && elem.end >= anomaly.start) {
             elem.TP = true;
@@ -155,6 +155,7 @@ void countAnomalyCommand :: generateAnomaliesVector(vector<compactAnomaly> &vec)
     while ((s = this->dio->read()) != "done"){
         TimeSeries ::splitByComma(pair, s);
         vec.emplace_back(stoi(pair[0]),stoi(pair[1])); // create compactAnomaly obj and push it.
+        pair.clear();
     }
 }
 
@@ -207,4 +208,9 @@ void countAnomalyCommand ::execute(CommandsDataBase *cdb) {
     this->dio->write("False Positive Rate: ");
     this->dio->write(FPRate);
     this->dio->write("\n");
+
+    // initialize TP back to 0 good goalkeeper.
+    for(auto &ca : cdb->compactReports){
+        ca.TP = false;
+    }
 }
