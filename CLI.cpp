@@ -4,7 +4,9 @@
 
 #include "CLI.h"
 #include <vector>
+#define TERMINATE_KEY "6"
 using namespace std;
+
 static void getMenu(vector<string> &menu){
     menu.emplace_back("Welcome to the Anomaly Detection Server.\n");
     menu.emplace_back("Please choose an option:\n");
@@ -36,7 +38,7 @@ void CLI::start(){
         key = dio->read();
         c = cf.getCommand(key);
         c->execute(cdb);
-    } while (typeid(*c) != typeid(terminateCommand));
+    } while (key != TERMINATE_KEY);
 }
 
 CLI::~CLI() = default;
