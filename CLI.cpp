@@ -1,7 +1,6 @@
 //
 // Created by DanMa on 30/12/2021.
 //
-
 #include "CLI.h"
 
 void CLI::start(){
@@ -15,7 +14,6 @@ void CLI::start(){
         c->execute(cdb);
     } while (typeid(*c) != typeid(terminateCommand));
 }
-
 
 CLI::~CLI() = default;
 
