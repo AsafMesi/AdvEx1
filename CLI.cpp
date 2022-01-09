@@ -33,12 +33,13 @@ void CLI::start(){
 
     string key;
     Command* c;
-    do {
+    key = dio->read();
+    while (key != TERMINATE_KEY) {
         writeMenu(this->dio, menu);
-        key = dio->read();
         c = cf.getCommand(key);
         c->execute(cdb);
-    } while (key != TERMINATE_KEY);
+        key = dio->read();
+    }
 }
 
 CLI::~CLI() = default;
