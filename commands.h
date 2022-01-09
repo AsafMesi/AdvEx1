@@ -43,8 +43,6 @@ public:
     virtual void read(float* f)=0;
     virtual ~DefaultIO()= default;
 
-    // you may add additional methods here
-    virtual void close() = 0;
     void readAndCreate(const string& fileName, const char* delim){
         ofstream out(fileName);
         string row;
@@ -270,14 +268,6 @@ public:
 
 };
 
-class terminateCommand : public Command{
-    void execute(CommandsDataBase* cdb) override {
-        this->dio->close();
-    }
-public:
-    explicit terminateCommand(DefaultIO* dio) : Command(dio){};
-};
-
 class commandFactory {
     map<string, Command*> cm;
     DefaultIO* dio;
@@ -305,9 +295,6 @@ public:
                     break;
                 case 5:
                     c = new countAnomalyCommand(this->dio);
-                    break;
-                case 6:
-                    c = new terminateCommand(this->dio);
                     break;
                 default:
                     dio->write("Invalid Option\n");
