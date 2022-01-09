@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include <fstream>
-#include "commands.h"
-#include "CLI.h"
+#include "../commands.h"
+#include "../CLI.h"
 
 using namespace std;
 
