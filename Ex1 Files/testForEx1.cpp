@@ -1,5 +1,5 @@
 #include <iostream>
-#include "anomaly_detection_util.h"
+#include "../anomaly_detection_util.h"
 
 using namespace std;
 
@@ -69,9 +69,3 @@ void test2(){
 
     cout<<"done2"<<endl;
 }
-int main() {
-    test1();
-    test2();
-    return 0;
-}
-
