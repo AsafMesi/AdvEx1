@@ -50,7 +50,7 @@ class Server {
     sockaddr_in server; // server's socket
     sockaddr_in client; // client's socket
 	thread* t; // the thread to run the start() method in
-    bool isStopped; // When we call stop - True. As long as it's true, we can accept new clients.
+    bool isStopped = false; // When we call stop - True. As long as it's true, we can accept new clients.
 
 public:
 	Server(int port) throw (const char*);

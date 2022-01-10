@@ -12,6 +12,7 @@ string socketIO::read(){
         recv(clientID,&c,sizeof(char),0);
         line+=c;
     }
+    line.pop_back();
     return line;
 }
 
@@ -34,6 +35,7 @@ void socketIO::read(float* f){
         recv(clientID,&c,sizeof(char),0);
         line+=c;
     }
+    line.pop_back();
     *f = stof(line);
 }
 
@@ -51,7 +53,7 @@ Server::Server(int port) throw (const char*) {
     server.sin_port = htons(port);
 
     // Try to assign the local socket address to the socket file descriptor.
-    if(bind(fd,(struct sockaddr*)&server,sizeof(server) < 0))
+    if(bind(fd,(struct sockaddr*)&server,sizeof(server)) < 0)
         cerr << "Server's socket bind failed" << endl;
 
     // Prepare the server for incoming client requests.
@@ -59,13 +61,13 @@ Server::Server(int port) throw (const char*) {
     if(listen(fd, 6) < 0)
         cerr << "Server's socket listen failed" << endl;
 
+    this->isStopped = false;
     // The server is ready!
 }
 
 void Server::start(ClientHandler& ch)throw(const char*){
     t = new thread([&ch, this](){
         while (!this->isStopped) {
-
             alarm(1);
             //Waiting for a client..., try accept client
             socklen_t clientSize = sizeof(client);
@@ -81,6 +83,7 @@ void Server::start(ClientHandler& ch)throw(const char*){
                 // as long as stop hasn't been called yet.
                 close(aClient); // close client's socket.
             }
+            alarm(0);
         }
         close(fd); // close server side server-client socket.
     });

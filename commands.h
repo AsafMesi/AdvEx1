@@ -51,7 +51,6 @@ public:
         }
         out.close();
     }
-
 };
 
 // you may add here helper classes

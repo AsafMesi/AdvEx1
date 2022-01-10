@@ -4,7 +4,9 @@
 
 #include "CLI.h"
 #include <vector>
-#define TERMINATE_KEY "6"
+#define TERMINATE_KEY_1 "6"
+#define TERMINATE_KEY_2 "6\n"
+
 using namespace std;
 
 static void getMenu(vector<string> &menu){
@@ -33,12 +35,14 @@ void CLI::start(){
 
     string key;
     Command* c;
-    key = dio->read();
-    while (key != TERMINATE_KEY) {
+    while(true) {
         writeMenu(this->dio, menu);
+        key = dio->read();
+        if (key == TERMINATE_KEY_1 || key == TERMINATE_KEY_2) {
+            break;
+        }
         c = cf.getCommand(key);
         c->execute(cdb);
-        key = dio->read();
     }
 }
 
