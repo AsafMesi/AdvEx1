@@ -1,7 +1,6 @@
 //
 // Created by DanMa on 30/12/2021.
 //
-
 #include "CLI.h"
 #include <vector>
 #define TERMINATE_KEY_1 "6"
