@@ -24,7 +24,7 @@ HybridAnomalyDetector::~HybridAnomalyDetector() = default;
  * and in some cases report an anomaly.
  */
 void HybridAnomalyDetector::learnNormal(const TimeSeries& ts){
-
+        cf.clear();
         // fill cf without type, correlation > MIN_CORRELATION_VALUE
         learnNormalHelper(ts, CIRCLE_CORRELATION);
         int size = cf.size();

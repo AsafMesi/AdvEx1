@@ -127,11 +127,12 @@ class updateThresholdCommand : public Command{
     void execute(CommandsDataBase* cdb) override {
         bool validInput = false;
         float f;
-        this->dio->write("The current correlation threshold is " + to_string(cdb->threshold) + "\n");
         while(!validInput){
-            this->dio->write("Type a new threshold\n");
+            this->dio->write("The current correlation threshold is ");
+            this->dio->write(cdb->threshold);
+            this->dio->write("\nType a new threshold\n");
             f = stof(this->dio->read());
-            if(0 <= f && f <= 1){
+            if(0 < f && f <= 1){
                 validInput = true;
                 cdb->threshold = f;
             }
@@ -150,9 +151,8 @@ class anomalyDetectionCommand : public Command{
 
         // update new threshold.
         cdb->had.setThreshold(cdb->threshold);
-
         cdb->had.learnNormal(*(cdb->train));
-        cdb->reports= cdb->had.detect(*(cdb->test));
+        cdb->reports = cdb->had.detect(*(cdb->test));
         reGenerateCompactReports(cdb);
         this->dio->write("anomaly detection complete.\n");
     }
@@ -217,6 +217,10 @@ class countAnomalyCommand : public Command{
         vector<compactAnomaly> expectedAnomalies;
         generateAnomaliesVector(expectedAnomalies);
         this->dio->write("Upload complete.\n");
+
+        for(auto &compactReport: cdb->compactReports){
+            compactReport.TP = false;
+        }
 
         for(auto &anomaly: expectedAnomalies){
             numOfExc += (anomaly.end - anomaly.start + 1);

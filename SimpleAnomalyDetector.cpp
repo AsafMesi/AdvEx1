@@ -22,7 +22,7 @@ SimpleAnomalyDetector::SimpleAnomalyDetector() = default;
  * and in some cases report an anomaly.
  */
 void SimpleAnomalyDetector::learnNormal(const TimeSeries& ts){
-
+    cf.clear();
     // fill cf without type, correlation > MIN_CORRELATION_VALUE
     learnNormalHelper(ts, this->globalThreshold);
 

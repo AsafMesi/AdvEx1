@@ -7,4 +7,4 @@ SET(CMAKE_CXX_FLAGS -pthread)
 
 add_executable(APP anomaly_detection_util.cpp timeseries.cpp
         SimpleAnomalyDetector.cpp minCircle.cpp minCircle.h HybridAnomalyDetector.cpp HybridAnomalyDetector.h
-        commands.h CLI.cpp CLI.h Server.h Server.cpp MainTrain_Ex6.cpp)
+        commands.h CLI.cpp CLI.h MainTrain_Ex5.cpp)
